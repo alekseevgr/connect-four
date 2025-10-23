@@ -1,0 +1,22 @@
+.cell {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cell--red {
+  background-color: red;
+}
+
+.cell--blue {
+  background-color: #0077ff;
+}
+
+.cell--red,
+.cell--blue {
+  cursor: default;
+}

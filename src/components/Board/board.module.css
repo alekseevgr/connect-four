@@ -1,0 +1,28 @@
+.boardWrapper {
+  text-align: center;
+}
+
+.title {
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+.red {
+  color: red;
+}
+
+.blue {
+  color: #0077ff;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(7, 60px);
+  grid-template-rows: repeat(6, 60px);
+  gap: 5px;
+  background-color: #0044aa;
+  padding: 10px;
+  border-radius: 10px;
+  width: max-content;
+  margin: 0 auto;
+}
