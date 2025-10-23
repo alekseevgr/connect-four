@@ -6,24 +6,28 @@ const rows = 6 //  ряды
 const cols = 7 // столбцы
 
 type CellValue = null | 'red' | 'blue' //тип ячейки
-type Player = 'red' | 'blue'
+type Player = 'red' | 'blue' // тип игрока
 
 export function Board() {
     const [board, setBoard] = useState<CellValue[][]>(
-        Array.from({ length: rows }, () => Array(cols).fill(null))
-    )
-    const [currentPlayer, setPlayer] = useState<Player>('red')
+        Array.from({ length: rows }, () => Array(cols).fill(null)) 
+    ) // создаем поле в котором будет массив из 6 рядов ив каждом будет по 7 элментов(столбцов)
+    const [currentPlayer, setPlayer] = useState<Player>('red') // выбираем игрока
 
-    const handleClick = (row: number, col: number) => {
-        const newBoard = board.map(row => [...row])
-        if (newBoard[row][col] !== null) return;
-        newBoard[row][col] = currentPlayer
+    const handleClick = (col: number) => {
+        const newBoard = board.map(row => [...row]) // копия поля
 
         const nextPlayer = currentPlayer === 'red' ? 'blue' : 'red'
 
-        setBoard(newBoard)
+        for (let row = rows - 1; row>= 0; row = row - 1){
+            if(newBoard[row][col] === null){
+                newBoard[row][col] = currentPlayer
+                setBoard(newBoard)
+                setPlayer(nextPlayer)
+                break;
+            }
+        }
 
-        setPlayer(nextPlayer)
     }
 
     return (
@@ -39,7 +43,7 @@ export function Board() {
                         <Cell
                             key={`${rowIndex - cellIndex}`}
                             color={cell}
-                            onClick={() => handleClick(rowIndex, cellIndex)}
+                            onClick={() => handleClick(cellIndex)}
                         />
                     )))}
             </div>
