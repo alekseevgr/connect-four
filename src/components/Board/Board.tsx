@@ -14,20 +14,21 @@ export function Board() {
     ) // создаем поле в котором будет массив из 6 рядов ив каждом будет по 7 элментов(столбцов)
     const [currentPlayer, setPlayer] = useState<Player>('red') // выбираем игрока
 
-    const handleClick = (col: number) => {
+    const handleClick = (row: number, col: number) => {
         const newBoard = board.map(row => [...row]) // копия поля
 
         const nextPlayer = currentPlayer === 'red' ? 'blue' : 'red'
 
-        for (let row = rows - 1; row>= 0; row = row - 1){
-            if(newBoard[row][col] === null){
-                newBoard[row][col] = currentPlayer
-                setBoard(newBoard)
-                setPlayer(nextPlayer)
-                break;
-            }
-        }
+        const isBottom = row === rows - 1
 
+        const nextFreeCell = !isBottom && newBoard[row + 1][col] !== null
+
+        if(newBoard[row][col] === null && (isBottom || nextFreeCell)){
+            newBoard[row][col] = currentPlayer
+            setBoard(newBoard)
+            setPlayer(nextPlayer)
+        }
+        
     }
 
     return (
@@ -43,7 +44,7 @@ export function Board() {
                         <Cell
                             key={`${rowIndex - cellIndex}`}
                             color={cell}
-                            onClick={() => handleClick(cellIndex)}
+                            onClick={() => handleClick(rowIndex, cellIndex)}
                         />
                     )))}
             </div>
