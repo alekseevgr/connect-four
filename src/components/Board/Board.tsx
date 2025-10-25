@@ -14,8 +14,19 @@ export function Board() {
         Array.from({ length: rows }, () => Array(cols).fill(null))
     ) // создаем поле в котором будет массив из 6 рядов ив каждом будет по 7 элментов(столбцов)
     const [currentPlayer, setPlayer] = useState<Player>('red') // выбираем игрока
+    const [winner, setWinner] = useState<Player | null>(null)
+
+    const resetGame = () => {
+        setBoard(Array.from({ length: rows }, () => Array(cols).fill(null)))
+        setPlayer('red')
+        setWinner(null)
+    }
 
     const handleClick = (row: number, col: number) => {
+
+        if (winner) {
+            return
+        }
         const newBoard = board.map(item => [...item]) // копия поля
 
         const nextPlayer = currentPlayer === 'red' ? 'blue' : 'red'
@@ -28,7 +39,8 @@ export function Board() {
             newBoard[row][col] = currentPlayer
             setBoard(newBoard)
 
-            if (checkWin(newBoard, row, col)){
+            if (checkWin(newBoard, row, col)) {
+                setWinner(currentPlayer)
                 alert(`Победил игрок ${currentPlayer}`)
                 return
             }
@@ -37,12 +49,26 @@ export function Board() {
 
     }
 
+    const text = (
+        <h2> Ходит игрок
+            <span className={currentPlayer === 'red' ? styles.red : styles.blue}>
+                {currentPlayer}
+            </span>
+        </h2>
+    )
+    const winnerText = (
+        <h2>
+            Победил
+            <span className={winner === 'red' ? styles.red : styles.blue}>
+                {winner}
+            </span>
+        </h2>
+    )
+
     return (
         <div className={styles.boardWrapper}>
             <h1 className={styles.title}> Очень увлекательная игра</h1>
-            <h2> Ходит игрок
-                <span className={currentPlayer === 'red' ? styles.red : styles.blue}>{currentPlayer}</span>
-            </h2>
+            {winner ? winnerText : text}
 
             <div className={styles.board}>
                 {board.map((row, rowIndex) =>
@@ -54,6 +80,9 @@ export function Board() {
                         />
                     )))}
             </div>
+            <button className={styles.resetButton} onClick={resetGame}>
+                Начать заново
+            </button>
         </div>
 
 
