@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { WinResult, GameState } from '../types/game';
 import checkWin from '../utils/checkWinner';
-import { isBoardFull } from '../utils/isBoardfull';
+import { isBoardFull} from '../utils/isBoardFull'
 import createEmptyBoard from '../utils/createBoard';
 
 
