@@ -9,26 +9,17 @@
   transition: background-color 0.2s ease;
 }
 
-.cell--red {
-  background-color: red;
-}
-
-.cell--blue {
-  background-color: #0077ff;
-}
-
-.cell--red,
-.cell--blue {
-  cursor: default;
-  border-radius: 50%;
-}
-
 .red {
   background-color: red;
 }
 
 .blue {
   background-color: blue;
+}
+
+.red,
+.blue {
+  cursor: default;
 }
 
 .winning {
