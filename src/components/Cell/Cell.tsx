@@ -11,13 +11,15 @@ type Props = {
 export function Cell({ color, onClick, isWinning}: Props) {
 
     return (
-        <div className={cn(styles.cell, {
+        <button className={cn(styles.cell, {
             [styles.winning]: isWinning,
             [styles.red]: color === 'red',
             [styles.blue]: color === 'blue',
         })}
+        type="button"
             onClick={onClick}
+            aria-label={color ? `Фишка ${color}` : 'Пустая ячейка'}
         >
-        </div>
+        </button>
     )
 }

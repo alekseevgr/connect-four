@@ -33,12 +33,29 @@ export function Board() {
             </span>
         </h2>
     );
+    const isDraw = winner === 'draw';
+
+    const drawText = <h2>Ничья </h2>;
+
+    const handleColumnClick = (cellIndex: number) => {
+        if (winner) return;
+
+        for (let row = board.length - 1; row >= 0; row--) {
+            if (board[row][cellIndex] === null) {
+                dispatch(makeMove({ col: cellIndex }));
+                return;
+            }
+        }
+
+    };
+
+
 
 
     return (
         <div className={styles.boardWrapper}>
             <h1 className={styles.title}> Очень увлекательная игра</h1>
-            {winner ? winnerText : text}
+            {isDraw ? drawText : winner ? winnerText : text}
 
             <div className={styles.board}>
                 {board.map((row, rowIndex) =>
@@ -47,14 +64,17 @@ export function Board() {
                             key={`${rowIndex}-${cellIndex}`}
                             color={cell}
                             isWinning={winningCells.some(([r, c]) => r === rowIndex && c === cellIndex)}
-                            onClick={() => dispatch(makeMove({ row: rowIndex, col: cellIndex }))}
+                            onClick={() => handleColumnClick(cellIndex)}
                         />
                     )))}
             </div>
             <button className={styles.resetButton} onClick={() => dispatch(resetGame())}>
                 Начать заново
             </button>
-            <button className={styles.resetButton} onClick={() => dispatch(goToMenu())}>
+            <button className={styles.resetButton} onClick={() => {
+                dispatch(resetGame());
+                dispatch(goToMenu());
+            }}>
                 В меню
             </button>
         </div>

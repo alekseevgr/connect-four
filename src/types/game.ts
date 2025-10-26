@@ -7,7 +7,7 @@ export type WinResult = {
 export type GameState = {
     board: CellValue[][],
     currentPlayer: Player,
-    winner: Player | null,
+    winner: Player | null | 'draw',
     winningCells: [number, number][]
 }
 export type GameMode = 'menu' | 'local' | 'ai' | 'multiplayer';
