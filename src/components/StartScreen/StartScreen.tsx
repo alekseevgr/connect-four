@@ -1,11 +1,10 @@
-import { useSelector } from 'react-redux';
-import type { RootState } from '../../store/store';
+import { useAppSelector } from '../../store/hooks';
 import { StartMenu } from './StartMenu';
-import { PlayerSetup } from './Players';
+import { PlayerSetup } from './PlayerSetup';
 
 
 export function StartScreen() {
-  const screen = useSelector((state: RootState) => state.ui.screen);
+  const screen = useAppSelector((state) => state.ui.screen);
 
   if (screen === 'names') return <PlayerSetup />;
   return <StartMenu />;

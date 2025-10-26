@@ -1,11 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux';
-import type { RootState } from '../../store/store';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setPlayerName, startGame } from '../../store/uiSlice';
 import styles from './start.module.css';
 
 export function PlayerSetup() {
-    const dispatch = useDispatch();
-    const players = useSelector((state: RootState) => state.ui.players);
+    const dispatch = useAppDispatch();
+    const players = useAppSelector((state) => state.ui.players);
+
 
     const red = players.red.trim();
     const blue = players.blue.trim();

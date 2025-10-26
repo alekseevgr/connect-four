@@ -10,7 +10,7 @@ export type GameState = {
     winner: Player | null | 'draw',
     winningCells: [number, number][]
 }
-export type GameMode = 'menu' | 'local' | 'ai' | 'multiplayer';
+export type GameMode =  'local' | 'ai' | 'multiplayer';
 
 export type Screen = 'menu' | 'names' | 'game';
 

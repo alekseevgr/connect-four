@@ -1,11 +1,11 @@
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../store/hooks';
 import { setGameMode, setScreen } from '../../store/uiSlice';
 import type { GameMode } from '../../types/game';
 import styles from './start.module.css';
 import classNames from 'classnames';
 
 export function StartMenu() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const buttons: { label: string; mode: GameMode; disabled: boolean }[] = [
     { label: '2 игрока на одном ПК', mode: 'local', disabled: false },

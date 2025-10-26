@@ -3,13 +3,14 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type { WinResult, GameState } from '../types/game';
 import checkWin from '../utils/checkWinner';
 import { isBoardFull } from '../utils/isBoardfull';
+import createEmptyBoard from '../utils/createBoard';
 
 
 const rows = 6 //  ряды
 const cols = 7 // столбцы
 
 const initialState: GameState = {
-    board: Array.from({ length: rows }, () => Array(cols).fill(null)),
+    board: createEmptyBoard(rows, cols),
     currentPlayer: 'red',
     winner: null,
     winningCells: []
@@ -60,7 +61,7 @@ export const gameSlice = createSlice({
             state.winningCells = result.cells;
         },
         resetGame(state) {
-            state.board = (Array.from({ length: rows }, () => Array(cols).fill(null)))
+            state.board = (createEmptyBoard(rows, cols))
             state.currentPlayer = 'red'
             state.winner = null
             state.winningCells = []

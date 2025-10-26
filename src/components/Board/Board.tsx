@@ -1,6 +1,5 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { makeMove, resetGame } from '../../store/gameSlice';
-import type { RootState } from '../../store/store';
 import { Cell } from '../Cell/Cell';
 import styles from './board.module.css';
 import { goToMenu } from '../../store/uiSlice';
@@ -8,9 +7,10 @@ import { goToMenu } from '../../store/uiSlice';
 
 export function Board() {
 
-    const dispatch = useDispatch()
-    const { red, blue } = useSelector((state: RootState) => state.ui.players);
-    const { board, currentPlayer, winner, winningCells } = useSelector((state: RootState) => state.game);
+    const dispatch = useAppDispatch();
+    const { red, blue } = useAppSelector((state) => state.ui.players);
+    const { board, currentPlayer, winner, winningCells } = useAppSelector((state) => state.game);
+
 
     const currentName = currentPlayer === 'red' ? red : blue
     const winnerName = winner === 'red' ? red : blue
