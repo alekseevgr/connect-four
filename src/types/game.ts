@@ -10,3 +10,15 @@ export type GameState = {
     winner: Player | null,
     winningCells: [number, number][]
 }
+export type GameMode = 'menu' | 'local' | 'ai' | 'multiplayer';
+
+export type Screen = 'menu' | 'names' | 'game';
+
+export type UIState = {
+    gameMode: GameMode | null;
+    screen: Screen
+    players: {
+        red: string,
+        blue: string
+    }
+}

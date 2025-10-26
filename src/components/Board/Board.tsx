@@ -3,28 +3,37 @@ import { makeMove, resetGame } from '../../store/gameSlice';
 import type { RootState } from '../../store/store';
 import { Cell } from '../Cell/Cell';
 import styles from './board.module.css';
+import { goToMenu } from '../../store/uiSlice';
 
 
 export function Board() {
 
     const dispatch = useDispatch()
+    const { red, blue } = useSelector((state: RootState) => state.ui.players);
     const { board, currentPlayer, winner, winningCells } = useSelector((state: RootState) => state.game);
 
+    const currentName = currentPlayer === 'red' ? red : blue
+    const winnerName = winner === 'red' ? red : blue
+
+
     const text = (
-        <h2> Ходит игрок
+        <h2>
+            Ходит игрок{' '}
             <span className={currentPlayer === 'red' ? styles.red : styles.blue}>
-                {currentPlayer}
+                {currentName}
             </span>
         </h2>
-    )
+    );
+
     const winnerText = (
         <h2>
-            Победил
+            Победил{' '}
             <span className={winner === 'red' ? styles.red : styles.blue}>
-                {winner}
+                {winnerName}
             </span>
         </h2>
-    )
+    );
+
 
     return (
         <div className={styles.boardWrapper}>
@@ -44,6 +53,9 @@ export function Board() {
             </div>
             <button className={styles.resetButton} onClick={() => dispatch(resetGame())}>
                 Начать заново
+            </button>
+            <button className={styles.resetButton} onClick={() => dispatch(goToMenu())}>
+                В меню
             </button>
         </div>
 
