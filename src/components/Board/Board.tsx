@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { makeMove, resetGame } from '../../store/gameSlice';
+import { useState } from 'react';
 import { Cell } from '../Cell/Cell';
 import styles from './board.module.css';
 import { goToMenu } from '../../store/uiSlice';
@@ -10,6 +11,8 @@ export function Board() {
     const dispatch = useAppDispatch();
     const { red, blue } = useAppSelector((state) => state.ui.players);
     const { board, currentPlayer, winner, winningCells } = useAppSelector((state) => state.game);
+    const [curColumn, setCurColumn] = useState<number | null>(null);
+
 
 
     const currentName = currentPlayer === 'red' ? red : blue
@@ -37,15 +40,20 @@ export function Board() {
 
     const drawText = <h2>Ничья </h2>;
 
+    const isColumnFull = (cellIndex: number) => board[0][cellIndex] !== null;
+    const getBottomCell = (cellIndex: number) => {
+        for (let row = board.length - 1; row >= 0; row--) {
+            if (board[row][cellIndex] === null) {
+                return row;
+            }
+        }
+        return null;
+    };
+
     const handleColumnClick = (cellIndex: number) => {
         if (winner) return;
 
-        for (let row = board.length - 1; row >= 0; row--) {
-            if (board[row][cellIndex] === null) {
-                dispatch(makeMove({ col: cellIndex }));
-                return;
-            }
-        }
+        dispatch(makeMove({ col: cellIndex }));
 
     };
 
@@ -59,14 +67,24 @@ export function Board() {
 
             <div className={styles.board}>
                 {board.map((row, rowIndex) =>
-                    row.map((cell, cellIndex) => (
-                        <Cell
+                    row.map((cell, cellIndex) => {
+                        const hoveredCell = getBottomCell(cellIndex) === rowIndex;
+
+                        return (<Cell
                             key={`${rowIndex}-${cellIndex}`}
                             color={cell}
                             isWinning={winningCells.some(([r, c]) => r === rowIndex && c === cellIndex)}
                             onClick={() => handleColumnClick(cellIndex)}
-                        />
-                    )))}
+                            info={
+                                rowIndex === 0 && !winner && isColumnFull(cellIndex) ? 'Столбец заполнен' : undefined
+                            }
+                            isHover={curColumn === cellIndex && hoveredCell}
+                            onHover={() => setCurColumn(cellIndex)}
+                            onLeave={() => setCurColumn(null)}
+                            hoverColor={currentPlayer}
+                        />)
+                    }
+                    ))}
             </div>
             <button className={styles.resetButton} onClick={() => dispatch(resetGame())}>
                 Начать заново

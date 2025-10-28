@@ -9,7 +9,8 @@ const initialState: UIState = {
     players: {
         red: '',
         blue: '',
-    }
+    },
+    errorMessage: null,
 };
 
 export const uiSlice = createSlice({
@@ -33,9 +34,12 @@ export const uiSlice = createSlice({
             state.gameMode = null;
             state.players = { red: '', blue: '' };
         },
+        setErrorMessage: (state, action: PayloadAction<string | null>) => {
+            state.errorMessage = action.payload;
+        },
 
     },
 });
 
-export const { setScreen, setGameMode, setPlayerName, startGame, goToMenu} = uiSlice.actions;
+export const { setScreen, setGameMode, setPlayerName, startGame, goToMenu, setErrorMessage } = uiSlice.actions;
 export default uiSlice.reducer;

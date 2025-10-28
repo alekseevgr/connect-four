@@ -1,4 +1,4 @@
-import type { Player, CellValue, WinResult } from "../types/game"
+import type { Player, CellValue, GameResult } from "../types/game"
 
 
 
@@ -21,7 +21,7 @@ function countDirection(board: CellValue[][], row: number, col: number, x: numbe
 }
 
 
-export default function checkWin(board: CellValue[][], row: number, col: number): WinResult {
+export default function checkWin(board: CellValue[][], row: number, col: number): GameResult {
   const player = board[row][col] as Player // нам приходит корретный игрок, null в функцию не передается
 
   const directions = [

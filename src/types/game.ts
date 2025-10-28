@@ -1,7 +1,7 @@
 export type CellValue = null | 'red' | 'blue' //тип ячейки
 export type Player = 'red' | 'blue' // тип игрока
-export type WinResult = {
-    winner: Player | null,
+export type GameResult = {
+    winner: Player | null | 'draw',
     cells: [number, number][]
 }
 export type GameState = {
@@ -21,4 +21,5 @@ export type UIState = {
         red: string,
         blue: string
     }
+    errorMessage: string | null;
 }

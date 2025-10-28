@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { WinResult, GameState } from '../types/game';
+import type { GameResult, GameState } from '../types/game';
 import checkWin from '../utils/checkWinner';
 import { isBoardFull} from '../utils/isBoardFull'
 import createEmptyBoard from '../utils/createBoard';
@@ -41,17 +41,20 @@ export const gameSlice = createSlice({
 
             newBoard[row][col] = state.currentPlayer;
 
-            const result: WinResult = checkWin(newBoard, row, col);
+            const result: GameResult = checkWin(newBoard, row, col);
 
             if (result.winner) { // обработка победы
                 state.board = newBoard;
                 state.winner = state.currentPlayer;
                 state.winningCells = result.cells;
+                state.currentPlayer = 'red'
                 return;
             }
             if (isBoardFull(newBoard)) { //если все заполнено и нет победителя
                 state.board = newBoard;
                 state.winner = 'draw'; 
+                state.winningCells = [];
+                state.currentPlayer = 'red'
                 return;
             }
 

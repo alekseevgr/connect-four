@@ -1,10 +1,14 @@
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setPlayerName, startGame } from '../../store/uiSlice';
 import styles from './start.module.css';
+import { setErrorMessage } from '../../store/uiSlice';
+
 
 export function PlayerSetup() {
     const dispatch = useAppDispatch();
     const players = useAppSelector((state) => state.ui.players);
+    const errorMessage = useAppSelector((state) => state.ui.errorMessage);
+
 
 
     const red = players.red.trim();
@@ -18,6 +22,11 @@ export function PlayerSetup() {
         <form className={styles.container}
             onSubmit={(e) => {
                 e.preventDefault();
+                if (!isValid) {
+                    dispatch(setErrorMessage('Имена игроков должны отличаться'));
+                    return;
+                }
+                dispatch(setErrorMessage(null));
                 if (isValid) dispatch(startGame());
             }}
         >
@@ -51,9 +60,7 @@ export function PlayerSetup() {
                     />
                 </div>
             </div>
-            {isName && !isValid && (
-                <p>Имена игроков должны отличаться</p>
-            )}
+            {errorMessage && <p>{errorMessage}</p>}
 
             <button
                 className={styles.button}
