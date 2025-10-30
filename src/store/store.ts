@@ -1,6 +1,7 @@
 import { configureStore, combineReducers} from '@reduxjs/toolkit'
 import gameReducer from './gameSlice'
 import uiReducer from './uiSlice'
+import statsReducer from './statsSlice'
 import storage from 'redux-persist/lib/storage'
 import {
   persistStore,
@@ -16,6 +17,7 @@ import {
 const rootReducer = combineReducers({
   game: gameReducer,
   ui: uiReducer,
+  stats: statsReducer
 })
 
 

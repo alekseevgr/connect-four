@@ -2,9 +2,9 @@ import type { Player, CellValue, GameResult } from "../types/game"
 
 
 
-function countDirection(board: CellValue[][], row: number, col: number, x: number, y: number, player: Player): [number, number][] {
+function countDirection(board: CellValue[][], row: number, col: number, x: number, y: number, player: Player, toWin: number): [number, number][] {
   const cells: [number, number][]= []
-  for (let move = 1; move < 4; move += 1) {  // идем по всем направлениям добавляя 1 шаг
+  for (let move = 1; move < toWin; move += 1) {  // идем по всем направлениям добавляя 1 шаг
     const nextRow = row + x * move // смотрим следующую строку
     const nextCol = col + y * move // смотрим следующий столбец
     if (nextRow >= 0 // проверяем на область допустимых значений и сравниваем с цветом игрока
@@ -21,7 +21,7 @@ function countDirection(board: CellValue[][], row: number, col: number, x: numbe
 }
 
 
-export default function checkWin(board: CellValue[][], row: number, col: number): GameResult {
+export default function checkWin(board: CellValue[][], row: number, col: number, toWin: number): GameResult {
   const player = board[row][col] as Player // нам приходит корретный игрок, null в функцию не передается
 
   const directions = [
@@ -32,11 +32,11 @@ export default function checkWin(board: CellValue[][], row: number, col: number)
   ];
 
   for (const { x, y } of directions) {
-    const forward = countDirection(board, row, col, x, y, player)
-    const back = countDirection(board, row, col, -x, -y, player)
+    const forward = countDirection(board, row, col, x, y, player, toWin)
+    const back = countDirection(board, row, col, -x, -y, player, toWin)
     const allCells: [number, number][] = [[row, col], ...forward, ...back]
 
-    if (allCells.length >= 4) {
+    if (allCells.length >= toWin) {
       return {winner: player, cells: allCells}
     }
   }

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { GameMode, UIState, Screen } from '../types/game';
+import type { GameMode, UIState, Screen, RulesType } from '../types/game';
 
 
 const initialState: UIState = {
@@ -11,6 +11,11 @@ const initialState: UIState = {
         blue: '',
     },
     errorMessage: null,
+    gameRules: {
+        rows: 6,
+        cols: 7,
+        cellToWin: 4,
+    }
 };
 
 export const uiSlice = createSlice({
@@ -37,9 +42,13 @@ export const uiSlice = createSlice({
         setErrorMessage: (state, action: PayloadAction<string | null>) => {
             state.errorMessage = action.payload;
         },
+        setGameRules: (state, action: PayloadAction<RulesType>) => {
+            const { rows, cols, cellToWin } = action.payload;
+            state.gameRules = { rows, cols, cellToWin };
+        },
 
     },
 });
 
-export const { setScreen, setGameMode, setPlayerName, startGame, goToMenu, setErrorMessage } = uiSlice.actions;
+export const { setScreen, setGameMode, setPlayerName, startGame, goToMenu, setErrorMessage, setGameRules } = uiSlice.actions;
 export default uiSlice.reducer;

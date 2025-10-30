@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { Cell } from '../Cell/Cell';
 import styles from './board.module.css';
 import { goToMenu } from '../../store/uiSlice';
+import { useEffect } from 'react';
+import { addWin } from '../../store/statsSlice';
+import { Stats } from '../Stats/Stats';
 
 
 export function Board() {
@@ -40,6 +43,14 @@ export function Board() {
 
     const drawText = <h2>Ничья </h2>;
 
+    useEffect(() => {
+        if (winner === 'red') {
+            dispatch(addWin(red));
+        } else if (winner === 'blue') {
+            dispatch(addWin(blue));
+        }
+    }, [winner, red, blue, dispatch]);
+
     const isColumnFull = (cellIndex: number) => board[0][cellIndex] !== null;
     const getBottomCell = (cellIndex: number) => {
         for (let row = board.length - 1; row >= 0; row--) {
@@ -52,6 +63,7 @@ export function Board() {
 
     const handleColumnClick = (cellIndex: number) => {
         if (winner) return;
+        if (isColumnFull(cellIndex)) return;
 
         dispatch(makeMove({ col: cellIndex }));
 
@@ -63,9 +75,14 @@ export function Board() {
     return (
         <div className={styles.boardWrapper}>
             <h1 className={styles.title}> Очень увлекательная игра</h1>
+            <Stats />
             {isDraw ? drawText : winner ? winnerText : text}
 
-            <div className={styles.board}>
+            <div className={styles.board}
+                style={{
+                    gridTemplateColumns: `repeat(${board[0]?.length}, 1fr)`,
+                    gridTemplateRows: `repeat(${board.length}, 1fr)`,
+                }}>
                 {board.map((row, rowIndex) =>
                     row.map((cell, cellIndex) => {
                         const hoveredCell = getBottomCell(cellIndex) === rowIndex;

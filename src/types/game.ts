@@ -8,9 +8,12 @@ export type GameState = {
     board: CellValue[][],
     currentPlayer: Player,
     winner: Player | null | 'draw',
-    winningCells: [number, number][]
+    winningCells: [number, number][],
+    rows: number;
+    cols: number;
+    cellToWin: number;
 }
-export type GameMode =  'local' | 'ai' | 'multiplayer';
+export type GameMode = 'local' | 'ai' | 'multiplayer';
 
 export type Screen = 'menu' | 'names' | 'game';
 
@@ -22,4 +25,10 @@ export type UIState = {
         blue: string
     }
     errorMessage: string | null;
+    gameRules: {
+        rows: number,
+        cols: number,
+        cellToWin: number,
+    }
 }
+export type RulesType = { rows: number; cols: number; cellToWin: number }
