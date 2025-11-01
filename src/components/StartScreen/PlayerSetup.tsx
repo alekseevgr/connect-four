@@ -1,8 +1,8 @@
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setPlayerName, startGame, setGameRules, setErrorMessage } from '../../store/uiSlice';
+import { setPlayerName, startGame, setGameRules, setErrorMessage, goToMenu } from '../../store/uiSlice';
 import { initGame } from '../../store/gameSlice';
 import styles from './start.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
 export function PlayerSetup() {
@@ -18,12 +18,13 @@ export function PlayerSetup() {
     const blue = players.blue.trim();
     const isName = red.length > 0 && blue.length > 0;
     const isDuplicate = red.toLowerCase() === blue.toLowerCase();
-    const isValid = isName && !isDuplicate;
+    useEffect(() => {
+        if (!isName) {
+            dispatch(setErrorMessage('Введите имена обоих игроков'));
+            return;
+        }
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        if (!isValid) {
+        if (isDuplicate) {
             dispatch(setErrorMessage('Имена игроков должны отличаться'));
             return;
         }
@@ -34,17 +35,24 @@ export function PlayerSetup() {
         }
 
         dispatch(setErrorMessage(null));
+    }, [isName, isDuplicate, rows, cols, cellToWin, dispatch]);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (errorMessage) return;
+
         dispatch(setGameRules({ rows, cols, cellToWin }));
         dispatch(initGame({ rows, cols, cellToWin }));
         dispatch(startGame());
     };
 
-
+    console.log('errorMessage:', errorMessage);
     return (
         <form className={styles.container}
             onSubmit={handleSubmit}
         >
-            <div className={styles.leftBlock}>
+            <div className={styles.block}>
                 <h1 className={styles.title}>Введите имена игроков и выберите правила игры</h1>
 
 
@@ -75,6 +83,7 @@ export function PlayerSetup() {
                             className={styles.inputBlue}
                         />
                     </div>
+                    {errorMessage && <p className={styles.error}>{errorMessage}</p>}
                 </div>
                 <div className={styles.rules}>
                     <h3>Параметры поля</h3>
@@ -111,21 +120,36 @@ export function PlayerSetup() {
                     </label>
 
                 </div>
-                {errorMessage && <p className={styles.error}>{errorMessage}</p>}
 
                 <button
                     className={styles.button}
                     type="submit"
-                    disabled={!isValid}
+                    disabled={!!errorMessage}
+                     title={errorMessage || ''}
                 >
                     Начать игру
                 </button>
+                <button
+                    className={styles.button}
+                    type="button"
+                    onClick={() => dispatch(goToMenu())}
+                >
+                    Назад в меню
+                </button>
             </div>
 
-            <div className={styles.rightBlock}>
-                <h2>Вы выбрали:</h2>
+            <div className={styles.block}>
 
-                <div>
+                <div className={styles.rules}>
+                    <h3>Правила игры</h3>
+                    <p>Игроки по очереди сбрасывают фишки в столбцы.</p>
+                    <p>Побеждает тот, кто первым соберёт <strong>{cellToWin}</strong> фишек подряд — по горизонтали, вертикали или диагонали.</p>
+                </div>
+
+
+                <h2>Параметры игры</h2>
+
+                <div className={styles.settings}>
                     <p><strong>Игрок 1:</strong> {red || '—'}</p>
                     <p><strong>Игрок 2:</strong> {blue || '—'}</p>
                     <p><strong>Строк:</strong> {rows}</p>
@@ -133,11 +157,7 @@ export function PlayerSetup() {
                     <p><strong>Фишек для победы:</strong> {cellToWin}</p>
                 </div>
 
-                <div>
-                    <h3>Правила игры</h3>
-                    <p>Игроки по очереди сбрасывают фишки в столбцы.</p>
-                    <p>Побеждает тот, кто первым соберёт <strong>{cellToWin}</strong> фишек подряд — по горизонтали, вертикали или диагонали.</p>
-                </div>
+
             </div>
         </form>
     );

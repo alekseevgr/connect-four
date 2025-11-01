@@ -38,6 +38,7 @@ export const uiSlice = createSlice({
             state.screen = 'menu';
             state.gameMode = null;
             state.players = { red: '', blue: '' };
+            state.errorMessage = null;
         },
         setErrorMessage: (state, action: PayloadAction<string | null>) => {
             state.errorMessage = action.payload;

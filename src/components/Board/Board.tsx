@@ -103,15 +103,17 @@ export function Board() {
                     }
                     ))}
             </div>
-            <button className={styles.resetButton} onClick={() => dispatch(resetGame())}>
-                Начать заново
-            </button>
-            <button className={styles.resetButton} onClick={() => {
-                dispatch(resetGame());
-                dispatch(goToMenu());
-            }}>
-                В меню
-            </button>
+            <div className={styles.buttonContainer}>
+                <button className={styles.resetButton} onClick={() => dispatch(resetGame())}>
+                    Начать заново
+                </button>
+                <button className={styles.resetButton} onClick={() => {
+                    dispatch(resetGame());
+                    dispatch(goToMenu());
+                }}>
+                    В меню
+                </button>
+            </div>
         </div>
 
 

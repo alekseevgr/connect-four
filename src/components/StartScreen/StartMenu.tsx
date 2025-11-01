@@ -14,7 +14,7 @@ export function StartMenu() {
   ];
 
   return (
-   <div className={`${styles.container} ${styles.startMenu}`}>
+   <div className={`${styles.startMenu}`}>
       <h1 className={styles.title}>Connect Four</h1>
       <div className={styles.buttons}>
         {buttons.map((btn) => (

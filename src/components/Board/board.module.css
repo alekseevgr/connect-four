@@ -1,42 +1,70 @@
 .boardWrapper {
   text-align: center;
+  background-color: #fbfbfd;
 }
 
 .title {
-  margin-bottom: 20px;
-  font-size: 1.2rem;
+  margin: 20px;
+  font-size: 2rem;
 }
 
 .red {
-  color: red;
+  color: #ff3b30;
 }
 
 .blue {
-  color: #0077ff;
+  color: #007aff;
 }
 
 .board {
   display: grid;
   gap: 5px;
-  background-color: #0044aa;
+  background-color: #e9e9ec;
+  border: 1px solid #d2d2d7;
   padding: 10px;
   border-radius: 10px;
   width: max-content;
   margin: 0 auto;
 }
 
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0 40px 0;
+  flex-wrap: wrap;
+}
+
 .resetButton {
-  margin-top: 16px;
-  padding: 10px 20px;
+  padding: 15px 30px;
   border: none;
   border-radius: 10px;
   background-color: #444;
   color: white;
   font-size: 16px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.5s;
+  width: auto;
 }
 
 .resetButton:hover {
   background-color: #666;
+}
+
+
+@media (max-width: 480px) {
+  .board {
+    gap: 3px;
+    padding: 6px;
+    transform: scale(0.8);
+  }
+
+  .buttonContainer {
+    transform: scale(0.8);
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
 }
