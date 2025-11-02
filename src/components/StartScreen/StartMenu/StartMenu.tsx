@@ -1,7 +1,7 @@
-import { useAppDispatch } from '../../store/hooks';
-import { setGameMode, setScreen } from '../../store/uiSlice';
-import type { GameMode } from '../../types/game';
-import styles from './start.module.css';
+import { useAppDispatch } from '../../../store/hooks';
+import { setGameMode, setScreen } from '../../../store/uiSlice';
+import type { GameMode } from '../../../types/game';
+import styles from './startMenu.module.css';
 import classNames from 'classnames';
 
 export function StartMenu() {
@@ -16,7 +16,7 @@ export function StartMenu() {
   return (
    <div className={`${styles.startMenu}`}>
       <h1 className={styles.title}>Connect Four</h1>
-      <div className={styles.buttons}>
+      <div>
         {buttons.map((btn) => (
           <button
             key={btn.mode}

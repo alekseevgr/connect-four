@@ -1,6 +1,6 @@
-import { useAppSelector } from '../../store/hooks';
-import { StartMenu } from './StartMenu';
-import { PlayerSetup } from './PlayerSetup';
+import { useAppSelector } from '../../store/hooks'
+import { StartMenu } from './StartMenu/StartMenu';
+import { PlayerSetup } from './PlayerSetup/PlayerSetup';
 
 
 export function StartScreen() {

@@ -1,6 +1,23 @@
 .boardWrapper {
+  position: relative;
   text-align: center;
   background-color: #fbfbfd;
+  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stats {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  flex-shrink: 0;
 }
 
 .title {
@@ -19,7 +36,7 @@
 .board {
   display: grid;
   gap: 5px;
-  background-color: #e9e9ec;
+  background: linear-gradient(145deg, #f9f9fb 0%, #ececef 50%, #e4e4e8 100%);
   border: 1px solid #d2d2d7;
   padding: 10px;
   border-radius: 10px;
@@ -34,13 +51,14 @@
   gap: 10px;
   margin: 20px 0 40px 0;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .resetButton {
   padding: 15px 30px;
   border: none;
   border-radius: 10px;
-  background-color: #444;
+  background-color: #007aff;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -49,22 +67,34 @@
 }
 
 .resetButton:hover {
-  background-color: #666;
+  background-color: #0056d6;
 }
 
 
 @media (max-width: 480px) {
+  .boardWrapper {
+     flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+   .stats {
+    position: static;
+    margin-top: 16px;
+    order: 2;
+  }
+
   .board {
     gap: 3px;
     padding: 6px;
-    transform: scale(0.8);
   }
 
   .buttonContainer {
-    transform: scale(0.8);
+    flex-direction: column;
+    gap: 8px;
   }
 
-  .title {
-    font-size: 1.5rem;
+  .resetButton {
+    width: 90%;
+    max-width: 240px;
   }
 }

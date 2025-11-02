@@ -1,6 +1,6 @@
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setPlayerName, startGame, setGameRules, setErrorMessage, goToMenu } from '../../store/uiSlice';
-import { initGame } from '../../store/gameSlice';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { setPlayerName, startGame, setGameRules, setErrorMessage, goToMenu } from '../../../store/uiSlice';
+import { initGame } from '../../../store/gameSlice';
 import styles from './start.module.css';
 import { useState, useEffect } from 'react';
 
@@ -13,18 +13,19 @@ export function PlayerSetup() {
     const [rows, setRows] = useState(6);
     const [cols, setCols] = useState(7);
     const [cellToWin, setCellToWin] = useState(4);
+    const [print, setPrint] = useState(false);
 
     const red = players.red.trim();
     const blue = players.blue.trim();
     const isName = red.length > 0 && blue.length > 0;
     const isDuplicate = red.toLowerCase() === blue.toLowerCase();
     useEffect(() => {
-        if (!isName) {
+        if (!isName && print) {
             dispatch(setErrorMessage('Введите имена обоих игроков'));
             return;
         }
 
-        if (isDuplicate) {
+        if (isDuplicate && isName) {
             dispatch(setErrorMessage('Имена игроков должны отличаться'));
             return;
         }
@@ -35,7 +36,7 @@ export function PlayerSetup() {
         }
 
         dispatch(setErrorMessage(null));
-    }, [isName, isDuplicate, rows, cols, cellToWin, dispatch]);
+    }, [print, isName, isDuplicate, rows, cols, cellToWin, dispatch]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -63,8 +64,10 @@ export function PlayerSetup() {
                             type="text"
                             autoFocus
                             value={players.red}
-                            onChange={(e) =>
+                            onChange={(e) => {
+                                setPrint(true);
                                 dispatch(setPlayerName({ color: 'red', name: e.target.value }))
+                            }
                             }
                             placeholder="Введите имя"
                             className={styles.inputRed}
@@ -76,8 +79,10 @@ export function PlayerSetup() {
                         <input
                             type="text"
                             value={players.blue}
-                            onChange={(e) =>
+                            onChange={(e) => {
+                                setPrint(true);
                                 dispatch(setPlayerName({ color: 'blue', name: e.target.value }))
+                            }
                             }
                             placeholder="Введите имя"
                             className={styles.inputBlue}
@@ -124,8 +129,8 @@ export function PlayerSetup() {
                 <button
                     className={styles.button}
                     type="submit"
-                    disabled={!!errorMessage}
-                     title={errorMessage || ''}
+                    disabled={!!errorMessage || !isName}
+                    title={errorMessage || ''}
                 >
                     Начать игру
                 </button>

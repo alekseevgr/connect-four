@@ -1,9 +1,9 @@
 import styles from './cell.module.css'
 import cn from 'classnames';
 
-
+type CellColor = 'red' | 'blue' | null;
 type Props = {
-    color: null | 'red' | 'blue',
+    color: CellColor,
     onClick: () => void,
     isWinning: boolean,
     info?: string,
@@ -20,7 +20,6 @@ export function Cell({ color, onClick, isWinning, info, isHover, onHover, onLeav
             [styles.winning]: isWinning,
             [styles.red]: color === 'red',
             [styles.blue]: color === 'blue',
-            [styles.hovered]: isHover && color === null,
             [styles.hoverRed]: isHover && color === null && hoverColor === 'red',
             [styles.hoverBlue]: isHover && color === null && hoverColor === 'blue',
         })}
@@ -30,8 +29,6 @@ export function Cell({ color, onClick, isWinning, info, isHover, onHover, onLeav
             title={info}
             onMouseEnter={onHover}
             onMouseLeave={onLeave}
-
-
         >
         </button>
     )

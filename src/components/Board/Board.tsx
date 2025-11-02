@@ -7,6 +7,7 @@ import { goToMenu } from '../../store/uiSlice';
 import { useEffect } from 'react';
 import { addWin } from '../../store/statsSlice';
 import { Stats } from '../Stats/Stats';
+import { FinishResult } from '../FinishResult/FinishResult'
 
 
 export function Board() {
@@ -74,46 +75,51 @@ export function Board() {
 
     return (
         <div className={styles.boardWrapper}>
-            <h1 className={styles.title}> Очень увлекательная игра</h1>
-            <Stats />
-            {isDraw ? drawText : winner ? winnerText : text}
+            <div className={styles.game}>
+                <h1 className={styles.title}> Очень увлекательная игра</h1>
+                {isDraw ? drawText : winner ? winnerText : text}
 
-            <div className={styles.board}
-                style={{
-                    gridTemplateColumns: `repeat(${board[0]?.length}, 1fr)`,
-                    gridTemplateRows: `repeat(${board.length}, 1fr)`,
-                }}>
-                {board.map((row, rowIndex) =>
-                    row.map((cell, cellIndex) => {
-                        const hoveredCell = getBottomCell(cellIndex) === rowIndex;
+                <div className={styles.board}
+                    style={{
+                        gridTemplateColumns: `repeat(${board[0]?.length}, 1fr)`,
+                        gridTemplateRows: `repeat(${board.length}, 1fr)`,
+                    }}>
+                    {board.map((row, rowIndex) =>
+                        row.map((cell, cellIndex) => {
+                            const hoveredCell = getBottomCell(cellIndex) === rowIndex;
 
-                        return (<Cell
-                            key={`${rowIndex}-${cellIndex}`}
-                            color={cell}
-                            isWinning={winningCells.some(([r, c]) => r === rowIndex && c === cellIndex)}
-                            onClick={() => handleColumnClick(cellIndex)}
-                            info={
-                                rowIndex === 0 && !winner && isColumnFull(cellIndex) ? 'Столбец заполнен' : undefined
-                            }
-                            isHover={curColumn === cellIndex && hoveredCell}
-                            onHover={() => setCurColumn(cellIndex)}
-                            onLeave={() => setCurColumn(null)}
-                            hoverColor={currentPlayer}
-                        />)
-                    }
-                    ))}
+                            return (<Cell
+                                key={`${rowIndex}-${cellIndex}`}
+                                color={cell}
+                                isWinning={winningCells.some(([r, c]) => r === rowIndex && c === cellIndex)}
+                                onClick={() => handleColumnClick(cellIndex)}
+                                info={
+                                    rowIndex === 0 && !winner && isColumnFull(cellIndex) ? 'Столбец заполнен' : undefined
+                                }
+                                isHover={curColumn === cellIndex && hoveredCell}
+                                onHover={() => setCurColumn(cellIndex)}
+                                onLeave={() => setCurColumn(null)}
+                                hoverColor={currentPlayer}
+                            />)
+                        }
+                        ))}
+                </div>
+                <div className={styles.buttonContainer}>
+                    <button className={styles.resetButton} onClick={() => dispatch(resetGame())}>
+                        Начать заново
+                    </button>
+                    <button className={styles.resetButton} onClick={() => {
+                        dispatch(resetGame());
+                        dispatch(goToMenu());
+                    }}>
+                        В меню
+                    </button>
+                </div>
             </div>
-            <div className={styles.buttonContainer}>
-                <button className={styles.resetButton} onClick={() => dispatch(resetGame())}>
-                    Начать заново
-                </button>
-                <button className={styles.resetButton} onClick={() => {
-                    dispatch(resetGame());
-                    dispatch(goToMenu());
-                }}>
-                    В меню
-                </button>
+            <div className={styles.stats}>
+                <Stats />
             </div>
+            <FinishResult />
         </div>
 
 

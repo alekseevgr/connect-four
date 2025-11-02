@@ -3,17 +3,9 @@
   justify-content: center;
   gap: 40px;
   background-color: #fbfbfd;
-  min-height: max-content;
   padding: 40px;
 }
-.startMenu {
-    display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  text-align: center;
-}
+
 .block {
   background-color: #f5f5f7;
   border: 1px solid #d2d2d7;
@@ -38,40 +30,39 @@
   font-weight: 600;
   text-align: center;
 }
-p, label {
+
+p,
+label {
   color: #6e6e73;
 }
 
 .rules,
 .settings {
-    color: #6e6e73;
-}
-.rules h3 {
-  color: #1d1d1f;
-}
-
-.inputRed {
-  border: 1px solid #ff3b30;
-}
-
-.inputBlue {
-  border: 1px solid #007aff;
+  color: #6e6e73;
 }
 
 .button {
-  background-color: #ffd60a;
-  color: #1d1d1f;
+  background-color: #007aff;
+  color: #ffffff;
   font-weight: 500;
   border: none;
   border-radius: 12px;
   padding: 12px 24px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  margin-top: 10px;
 }
 
 .button:hover {
-  background-color: #f7c948;
+  background-color: #0056d6;
+  transform: translateY(-1px);
 }
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .players {
   display: flex;
   flex-direction: column;
@@ -85,6 +76,13 @@ p, label {
   margin-bottom: 6px;
   font-weight: 500;
 }
+.inputRed {
+  border: 1px solid #ff3b30;
+}
+
+.inputBlue {
+  border: 1px solid #007aff;
+}
 
 .inputRed,
 .inputBlue {
@@ -96,13 +94,6 @@ p, label {
   transition: box-shadow 0.2s ease;
   background-color: #ffffff;
 }
-.inputRed {
-  border: 1px solid #ff3b30;
-}
-
-.inputBlue {
-  border: 1px solid #007aff;
-}
 
 .inputRed:focus,
 .inputBlue:focus {
@@ -110,7 +101,7 @@ p, label {
 }
 
 .rules {
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.75);
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 24px;
@@ -130,37 +121,13 @@ p, label {
   margin-bottom: 12px;
 }
 
-.button {
-  display: block;
-  width: 100%;
-  background-color: #ffd60a;
-  color: #1d1d1f;
-  font-weight: 600;
-  border: none;
-  border-radius: 12px;
-  padding: 14px;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.15s ease;
-  margin-top: 10px;
-}
-
-.button:hover {
-  background-color: #f7c948;
-  transform: translateY(-1px);
-}
-
-.button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
 .error {
   background-color: rgba(255, 59, 48, 0.08);
   color: #ff3b30;
   border: 1px solid rgba(255, 59, 48, 0.15);
   border-radius: 10px;
   padding: 10px 14px;
-  margin-bottom: 24px; 
+  margin-bottom: 24px;
   font-size: 0.95rem;
   font-weight: 500;
   text-align: center;
@@ -169,4 +136,27 @@ p, label {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 20px;
+  }
+
+  .block {
+    width: 90%;
+    max-width: 500px;
+  }
+
+  .title {
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  .button {
+    width: 100%;
+  }
 }

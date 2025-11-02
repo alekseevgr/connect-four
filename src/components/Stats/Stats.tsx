@@ -19,7 +19,7 @@ export function Stats() {
             </li>
           ))}
       </ul>
-      <button onClick={() => dispatch(resetStats())}>Сбросить</button>
+      <button className={styles.button} onClick={() => dispatch(resetStats())}>Сбросить</button>
     </div>
   );
 }
