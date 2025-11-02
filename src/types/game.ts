@@ -1,5 +1,5 @@
-export type CellValue = null | 'red' | 'blue' //тип ячейки
-export type Player = 'red' | 'blue' // тип игрока
+export type CellValue = null | 'player_1' | 'player_2' //тип ячейки
+export type Player = 'player_1' | 'player_2' // тип игрока
 export type GameResult = {
     winner: Player | null | 'draw',
     cells: [number, number][]

@@ -19,14 +19,14 @@ export function Board() {
 
 
 
-    const currentName = currentPlayer === 'red' ? red : blue
-    const winnerName = winner === 'red' ? red : blue
+    const currentName = currentPlayer === 'player_1' ? red : blue
+    const winnerName = winner === 'player_1' ? red : blue
 
 
     const text = (
         <h2>
             Ходит игрок{' '}
-            <span className={currentPlayer === 'red' ? styles.red : styles.blue}>
+            <span className={currentPlayer === 'player_1' ? styles.red : styles.blue}>
                 {currentName}
             </span>
         </h2>
@@ -35,7 +35,7 @@ export function Board() {
     const winnerText = (
         <h2>
             Победил{' '}
-            <span className={winner === 'red' ? styles.red : styles.blue}>
+            <span className={winner === 'player_1' ? styles.red : styles.blue}>
                 {winnerName}
             </span>
         </h2>
@@ -45,9 +45,9 @@ export function Board() {
     const drawText = <h2>Ничья </h2>;
 
     useEffect(() => {
-        if (winner === 'red') {
+        if (winner === 'player_1') {
             dispatch(addWin(red));
-        } else if (winner === 'blue') {
+        } else if (winner === 'player_2') {
             dispatch(addWin(blue));
         }
     }, [winner, red, blue, dispatch]);
@@ -87,10 +87,11 @@ export function Board() {
                     {board.map((row, rowIndex) =>
                         row.map((cell, cellIndex) => {
                             const hoveredCell = getBottomCell(cellIndex) === rowIndex;
+                            const colorCell = cell === 'player_1' ? 'red' : 'blue'
 
                             return (<Cell
                                 key={`${rowIndex}-${cellIndex}`}
-                                color={cell}
+                                color={colorCell}
                                 isWinning={winningCells.some(([r, c]) => r === rowIndex && c === cellIndex)}
                                 onClick={() => handleColumnClick(cellIndex)}
                                 info={
@@ -99,7 +100,7 @@ export function Board() {
                                 isHover={curColumn === cellIndex && hoveredCell}
                                 onHover={() => setCurColumn(cellIndex)}
                                 onLeave={() => setCurColumn(null)}
-                                hoverColor={currentPlayer}
+                                hoverColor={colorCell}
                             />)
                         }
                         ))}

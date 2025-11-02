@@ -21,14 +21,14 @@ export function FinishResult() {
     if (!winner || !visible) return null;
 
     const whoWin =
-        winner === 'red' ? red :
-            winner === 'blue' ? blue :
+        winner === 'player_1' ? red :
+            winner === 'player_2' ? blue :
                 'Ничья';
 
     const winnerText = (
         <h2>
             Победил{' '}
-            <span className={winner === 'red' ? styles.red : styles.blue}>
+            <span className={winner === 'player_1' ? styles.red : styles.blue}>
                 {whoWin}
             </span>
         </h2>

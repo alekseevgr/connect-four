@@ -7,7 +7,7 @@ import createEmptyBoard from '../utils/createBoard';
 
 const initialState: GameState = {
     board: [],
-    currentPlayer: 'red',
+    currentPlayer: 'player_1',
     winner: null,
     winningCells: [],
     rows: 6,
@@ -25,7 +25,7 @@ export const gameSlice = createSlice({
             state.cols = cols;
             state.cellToWin = cellToWin;
             state.board = createEmptyBoard(rows, cols);
-            state.currentPlayer = 'red';
+            state.currentPlayer = 'player_1';
             state.winner = null;
             state.winningCells = [];
         },
@@ -37,7 +37,7 @@ export const gameSlice = createSlice({
             const { col } = action.payload
             const newBoard = state.board.map(item => [...item]) // копия поля
 
-            const nextPlayer = state.currentPlayer === 'red' ? 'blue' : 'red'
+            const nextPlayer = state.currentPlayer === 'player_1' ? 'player_2' : 'player_1'
 
             let row = -1;
             for (let r = newBoard.length - 1; r >= 0; r--) {
@@ -56,14 +56,14 @@ export const gameSlice = createSlice({
                 state.board = newBoard;
                 state.winner = state.currentPlayer;
                 state.winningCells = result.cells;
-                state.currentPlayer = 'red'
+                state.currentPlayer = 'player_1'
                 return;
             }
             if (isBoardFull(newBoard)) { //если все заполнено и нет победителя
                 state.board = newBoard;
                 state.winner = 'draw';
                 state.winningCells = [];
-                state.currentPlayer = 'red'
+                state.currentPlayer = 'player_1'
                 return;
             }
 
@@ -74,7 +74,7 @@ export const gameSlice = createSlice({
         },
         resetGame(state) {
             state.board = (createEmptyBoard(state.rows, state.cols))
-            state.currentPlayer = 'red'
+            state.currentPlayer = 'player_1'
             state.winner = null
             state.winningCells = []
         }
