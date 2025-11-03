@@ -5,7 +5,13 @@ import checkWin from '../utils/checkWinner';
 import { isBoardFull } from '../utils/isBoardFull'
 import createEmptyBoard from '../utils/createBoard';
 
-const initialState: GameState = {
+interface GameHistoryState extends GameState {
+    prev: GameState[];
+    next: GameState[];
+} // добавляем для undo redo, новый тип для состояния игры
+
+
+const initialState: GameHistoryState = {
     board: [],
     currentPlayer: 'player_1',
     winner: null,
@@ -13,6 +19,8 @@ const initialState: GameState = {
     rows: 6,
     cols: 7,
     cellToWin: 4,
+    prev: [],
+    next: [],
 }
 
 export const gameSlice = createSlice({
@@ -28,6 +36,8 @@ export const gameSlice = createSlice({
             state.currentPlayer = 'player_1';
             state.winner = null;
             state.winningCells = [];
+            state.prev = [];
+            state.next = [];
         },
         makeMove(state, action: PayloadAction<{ col: number }>) {
 
@@ -47,6 +57,18 @@ export const gameSlice = createSlice({
                 }
             }
             if (row === -1) return;
+
+            state.prev.push({
+                board: state.board.map(r => [...r]),
+                currentPlayer: state.currentPlayer,
+                winner: state.winner,
+                winningCells: [...state.winningCells],
+                rows: state.rows,
+                cols: state.cols,
+                cellToWin: state.cellToWin,
+            });  // добавляем предыдущее состояние игры
+
+            state.next = []; // чистим настоящее-будущее
 
             newBoard[row][col] = state.currentPlayer;
 
@@ -72,6 +94,51 @@ export const gameSlice = createSlice({
             state.currentPlayer = nextPlayer;
             state.winningCells = result.cells;
         },
+        undo(state) {
+            if (state.prev.length === 0) {
+                return
+            }
+
+            state.next.unshift({
+                board: state.board.map(r => [...r]),
+                currentPlayer: state.currentPlayer,
+                winner: state.winner,
+                winningCells: [...state.winningCells],
+                rows: state.rows,
+                cols: state.cols,
+                cellToWin: state.cellToWin,
+            });
+
+            const previous = state.prev.pop()!;
+            state.board = previous.board.map(r => [...r]);
+            state.currentPlayer = previous.currentPlayer;
+            state.winner = previous.winner;
+            state.winningCells = [...previous.winningCells];
+        },
+
+
+        redo(state) {
+            if (state.prev.length === 0) {
+                return
+            }
+
+            state.prev.push({
+                board: state.board.map(r => [...r]),
+                currentPlayer: state.currentPlayer,
+                winner: state.winner,
+                winningCells: [...state.winningCells],
+                rows: state.rows,
+                cols: state.cols,
+                cellToWin: state.cellToWin,
+            });
+            const next = state.next.shift()!;
+            state.board = next.board.map(r => [...r]);
+            state.currentPlayer = next.currentPlayer;
+            state.winner = next.winner;
+            state.winningCells = [...next.winningCells];
+
+
+        },
         resetGame(state) {
             state.board = (createEmptyBoard(state.rows, state.cols))
             state.currentPlayer = 'player_1'
@@ -81,5 +148,5 @@ export const gameSlice = createSlice({
     }
 })
 
-export const { makeMove, resetGame, initGame} = gameSlice.actions;
+export const { makeMove, resetGame, initGame, undo, redo } = gameSlice.actions;
 export default gameSlice.reducer;

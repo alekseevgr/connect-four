@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { addWin } from '../../store/statsSlice';
 import { Stats } from '../Stats/Stats';
 import { FinishResult } from '../FinishResult/FinishResult'
+import { UndoRedo } from './UndoRedo';
 
 
 export function Board() {
@@ -71,8 +72,6 @@ export function Board() {
     };
 
 
-
-
     return (
         <div className={styles.boardWrapper}>
             <div className={styles.game}>
@@ -87,11 +86,11 @@ export function Board() {
                     {board.map((row, rowIndex) =>
                         row.map((cell, cellIndex) => {
                             const hoveredCell = getBottomCell(cellIndex) === rowIndex;
-                            const colorCell = cell === 'player_1' ? 'red' : 'blue'
+                 
 
                             return (<Cell
                                 key={`${rowIndex}-${cellIndex}`}
-                                color={colorCell}
+                                color={cell}
                                 isWinning={winningCells.some(([r, c]) => r === rowIndex && c === cellIndex)}
                                 onClick={() => handleColumnClick(cellIndex)}
                                 info={
@@ -100,11 +99,12 @@ export function Board() {
                                 isHover={curColumn === cellIndex && hoveredCell}
                                 onHover={() => setCurColumn(cellIndex)}
                                 onLeave={() => setCurColumn(null)}
-                                hoverColor={colorCell}
+                                hoverColor={currentPlayer}
                             />)
                         }
                         ))}
                 </div>
+                <UndoRedo />
                 <div className={styles.buttonContainer}>
                     <button className={styles.resetButton} onClick={() => dispatch(resetGame())}>
                         Начать заново

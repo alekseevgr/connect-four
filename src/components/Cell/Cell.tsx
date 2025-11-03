@@ -1,7 +1,7 @@
 import styles from './cell.module.css'
 import cn from 'classnames';
 
-type CellColor = 'red' | 'blue' | null;
+type CellColor = 'player_1' | 'player_2' | null;
 type Props = {
     color: CellColor,
     onClick: () => void,
@@ -10,7 +10,7 @@ type Props = {
     isHover?: boolean,
     onHover: () => void,
     onLeave: () => void,
-    hoverColor?: 'red' | 'blue'
+    hoverColor?: 'player_1' | 'player_2',
 }
 
 export function Cell({ color, onClick, isWinning, info, isHover, onHover, onLeave, hoverColor }: Props) {
@@ -18,10 +18,10 @@ export function Cell({ color, onClick, isWinning, info, isHover, onHover, onLeav
     return (
         <button className={cn(styles.cell, {
             [styles.winning]: isWinning,
-            [styles.red]: color === 'red',
-            [styles.blue]: color === 'blue',
-            [styles.hoverRed]: isHover && color === null && hoverColor === 'red',
-            [styles.hoverBlue]: isHover && color === null && hoverColor === 'blue',
+            [styles.cellRed]: color === 'player_1',
+            [styles.cellBlue]: color === 'player_2',
+            [styles.hoverRed]: isHover && color === null && hoverColor === 'player_1',
+            [styles.hoverBlue]: isHover && color === null && hoverColor === 'player_2',
         })}
             type="button"
             onClick={onClick}

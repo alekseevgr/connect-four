@@ -49,6 +49,12 @@ export function PlayerSetup() {
     };
 
     console.log('errorMessage:', errorMessage);
+
+    const nameError =
+        (!isName && print) || (isDuplicate && isName) ? errorMessage : null;
+
+    const fieldError =
+        cellToWin > Math.min(rows, cols) ? errorMessage : null;
     return (
         <form className={styles.container}
             onSubmit={handleSubmit}
@@ -88,7 +94,7 @@ export function PlayerSetup() {
                             className={styles.inputBlue}
                         />
                     </div>
-                    {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+                    {nameError && <p className={styles.error}>{nameError}</p>}
                 </div>
                 <div className={styles.rules}>
                     <h3>Параметры поля</h3>
@@ -113,6 +119,7 @@ export function PlayerSetup() {
                         />
                     </label>
 
+
                     <label>
                         Для победы нужно {cellToWin} фишки
                         <input
@@ -124,23 +131,26 @@ export function PlayerSetup() {
                         />
                     </label>
 
+                    {fieldError && <p className={styles.error}>{fieldError}</p>}
                 </div>
 
-                <button
-                    className={styles.button}
-                    type="submit"
-                    disabled={!!errorMessage || !isName}
-                    title={errorMessage || ''}
-                >
-                    Начать игру
-                </button>
-                <button
-                    className={styles.button}
-                    type="button"
-                    onClick={() => dispatch(goToMenu())}
-                >
-                    Назад в меню
-                </button>
+                <div className={styles.buttons}>
+                    <button
+                        className={styles.button}
+                        type="submit"
+                        disabled={!!errorMessage || !isName}
+                        title={errorMessage || ''}
+                    >
+                        Начать игру
+                    </button>
+                    <button
+                        className={styles.button}
+                        type="button"
+                        onClick={() => dispatch(goToMenu())}
+                    >
+                        Назад в меню
+                    </button>
+                </div>
             </div>
 
             <div className={styles.block}>

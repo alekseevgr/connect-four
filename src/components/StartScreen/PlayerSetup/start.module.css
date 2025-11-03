@@ -40,6 +40,13 @@ label {
 .settings {
   color: #6e6e73;
 }
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+}
 
 .button {
   background-color: #007aff;
@@ -154,6 +161,10 @@ label {
   .title {
     font-size: 1.6rem;
     text-align: center;
+  }
+   .buttons {
+    flex-direction: column;
+    width: 100%;
   }
 
   .button {
