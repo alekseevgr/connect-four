@@ -9,10 +9,10 @@ export function UndoRedo() {
   return (
     <div className={styles.undoRedoContainer}>
       <button className={styles.undoRedoButton} onClick={() => dispatch(undo())} disabled={prev.length === 0}>
-        Undo
+        Отменить ход
       </button>
       <button className={styles.undoRedoButton} onClick={() => dispatch(redo())} disabled={next.length === 0}>
-        Redo
+        Ход вперед
       </button>
     </div>
   );

@@ -93,7 +93,7 @@ label {
 
 .inputRed,
 .inputBlue {
-  width: 100%;
+  width: 95%;
   padding: 10px 14px;
   border-radius: 10px;
   font-size: 1rem;
@@ -101,10 +101,14 @@ label {
   transition: box-shadow 0.2s ease;
   background-color: #ffffff;
 }
+.inputRed:focus {
+  border-color: #ff3b30;
+  box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.3);
+}
 
-.inputRed:focus,
 .inputBlue:focus {
-  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+  border-color: #007aff;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25);
 }
 
 .rules {

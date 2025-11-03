@@ -65,7 +65,7 @@ export function PlayerSetup() {
 
                 <div className={styles.players}>
                     <div className={styles.player}>
-                        <label className={styles.red}>Игрок 1 (красный)</label>
+                        <label>Игрок 1 (красный)</label>
                         <input
                             type="text"
                             autoFocus
@@ -81,7 +81,7 @@ export function PlayerSetup() {
                     </div>
 
                     <div className={styles.player}>
-                        <label className={styles.blue}>Игрок 2 (синий)</label>
+                        <label>Игрок 2 (синий)</label>
                         <input
                             type="text"
                             value={players.blue}
@@ -146,7 +146,10 @@ export function PlayerSetup() {
                     <button
                         className={styles.button}
                         type="button"
-                        onClick={() => dispatch(goToMenu())}
+                        onClick={() => {
+                            dispatch(setErrorMessage(null));
+                            dispatch(goToMenu());
+                        }}
                     >
                         Назад в меню
                     </button>
