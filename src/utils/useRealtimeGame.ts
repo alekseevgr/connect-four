@@ -1,47 +1,59 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { supabase } from '../supabaseClient';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 
-export function useRealtimeGame(roomId: string, playerName: string, onMove: (col: number) => void) {
+export function useRealtimeGame(
+  roomId: string,
+  playerName: string,
+  onReceiveMove: (col: number) => void
+) {
   const [playersCount, setPlayersCount] = useState(0);
-  const [channel, setChannel] = useState<RealtimeChannel | null>(null);
+  const [channelReady, setChannelReady] = useState(false);
+  const channelRef = useRef<RealtimeChannel | null>(null);
 
   useEffect(() => {
     if (!roomId || !playerName) return;
 
-    const ch = supabase.channel(`game:${roomId}`, {
+    // создаем канал
+    const channel = supabase.channel(`game:${roomId}`, {
       config: { presence: { key: playerName } },
     });
 
-    ch.on('presence', { event: 'sync' }, () => {
-      const users = ch.presenceState();
-      const count = Object.keys(users).length;
+    channelRef.current = channel;
+
+    channel.on('presence', { event: 'sync' }, () => {
+      const state = channel.presenceState();
+      console.log('Current presence:', channel.presenceState());
+      const count = Object.keys(state).length;
       setPlayersCount(count);
     });
 
-    ch.on('broadcast', { event: 'move' }, (payload) => {
-      onMove(payload.payload.col);
+    channel.on('broadcast', { event: 'move' }, (payload) => {
+      onReceiveMove(payload.payload.col);
     });
 
-    ch.subscribe(async (status) => {
+    channel.subscribe(async (status) => {
       if (status === 'SUBSCRIBED') {
-        await ch.track({ player: playerName });
+        await channel.track({ player: playerName });
+        setChannelReady(true);
       }
     });
 
-    setChannel(ch);
     return () => {
-      ch.unsubscribe();
+      channel.unsubscribe();
+      channelRef.current = null;
     };
-  }, [roomId, playerName, onMove]);
+  }, [roomId, playerName, onReceiveMove]);
 
   const sendMove = (col: number) => {
-    channel?.send({
+    if (!channelReady || !channelRef.current) return;
+    channelRef.current.send({
       type: 'broadcast',
       event: 'move',
       payload: { col },
     });
   };
+  
 
   return { sendMove, playersCount };
 }

@@ -4,14 +4,15 @@ import { setScreen, setPlayerName } from '../../../store/uiSlice';
 import {
   setRoomId,
   setPlayerRole,
-  setConnected,
 } from '../../../store/multiplayerSlice';
 import { useRealtimeGame } from '../../../utils/useRealtimeGame';
 import styles from './multiplayer.module.css';
 
 export function MultiplayerSetup() {
+  
   const dispatch = useAppDispatch();
   const { roomId } = useAppSelector((state) => state.multiplayer);
+   const { red } = useAppSelector((state) => state.ui.players);
 
   const [inputRoomId, setInputRoomId] = useState('');
   const [generatedRoomId] = useState(() =>
@@ -20,15 +21,13 @@ export function MultiplayerSetup() {
   const [playerName, setPlayerNameInput] = useState('');
   const [mode, setMode] = useState<'create' | 'join' | null>(null);
 
-  const { playersCount } = useRealtimeGame(roomId ?? '', playerName, () => { });
+  const { playersCount } = useRealtimeGame(roomId || '', red, () => {});
 
   useEffect(() => {
-
-    if (mode && playersCount === 2) {
-      dispatch(setConnected(true));
+    if (playersCount === 2) {
       dispatch(setScreen('game'));
     }
-  }, [playersCount, mode, dispatch]);
+  }, [playersCount, dispatch]);
 
   const handleCreateRoom = () => {
     if (!playerName.trim()) return alert('Введите имя!');
