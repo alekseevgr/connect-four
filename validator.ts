@@ -46,6 +46,8 @@ const validator = (playersMove: number[]): GameHistory => {
         const player: Player = stepNumber % 2 === 0 ? "player_1" : "player_2";
         const column = playersMove[stepNumber];
 
+        if (column < 0 || column >= cols) continue;
+
         let fullRow = -1; //идем в нижнюю достпуную ячейку и ставим там ход
         for (let r = rows - 1; r >= 0; r--) {
             if (board[r][column] === null) {
@@ -94,9 +96,5 @@ const validator = (playersMove: number[]): GameHistory => {
     return history
 
 }
-
-
-const moves = [1, 2, 1, 2, 3, 2, 3, 2];
-console.log(JSON.stringify(validator(moves), null, 2));
 
 export default validator
