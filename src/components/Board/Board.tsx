@@ -94,7 +94,7 @@ export function Board() {
     return (
         <div className={styles.boardWrapper}>
             <div className={styles.game}>
-                <h1 className={styles.title}> Очень увлекательная игра</h1>
+                <h1 className={styles.title}> Connect Four</h1>
                 {isDraw ? drawText : winner ? winnerText : text}
 
                 <div className={styles.board}

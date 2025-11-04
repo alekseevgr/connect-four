@@ -19,10 +19,10 @@
 
 ## Установка и запуск
 
-1. git clone https://github.com/alekseevgr/connect-four.git
-2. cd connect-four
-3. npm install
-4. npm run dev
+1. ``` git clone https://github.com/alekseevgr/connect-four.git ```
+2. ``` cd connect-four ```
+3. ```npm install```
+4. ```npm run dev```
 
 ## Что считаю сильной стороной
 
