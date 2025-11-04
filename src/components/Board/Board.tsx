@@ -9,6 +9,7 @@ import { addWin } from '../../store/statsSlice';
 import { Stats } from '../Stats/Stats';
 import { FinishResult } from '../FinishResult/FinishResult'
 import { UndoRedo } from './UndoRedo';
+import aiMove from '../../utils/aimove';
 
 
 export function Board() {
@@ -16,7 +17,10 @@ export function Board() {
     const dispatch = useAppDispatch();
     const { red, blue } = useAppSelector((state) => state.ui.players);
     const { board, currentPlayer, winner, winningCells } = useAppSelector((state) => state.game);
+    const gameMode = useAppSelector((state) => state.ui.gameMode);
+
     const [curColumn, setCurColumn] = useState<number | null>(null);
+
 
 
 
@@ -26,10 +30,14 @@ export function Board() {
 
     const text = (
         <h2>
-            Ходит игрок{' '}
-            <span className={currentPlayer === 'player_1' ? styles.red : styles.blue}>
-                {currentName}
-            </span>
+            {gameMode === 'ai' && currentPlayer === 'player_2'
+                ? 'Ходит компьютер'
+                : <>Ходит игрок{' '}
+                    <span className={currentPlayer === 'player_1' ? styles.red : styles.blue}>
+                        {currentName}
+                    </span>
+                </>
+            }
         </h2>
     );
 
@@ -63,11 +71,22 @@ export function Board() {
         return null;
     };
 
-    const handleColumnClick = (cellIndex: number) => {
+    const handleColumnClick = async (cellIndex: number) => {
         if (winner) return;
         if (isColumnFull(cellIndex)) return;
 
+        if (gameMode === 'ai' && currentPlayer === 'player_2') return; //  нельзя кликнуть когда комп в игре
+
         dispatch(makeMove({ col: cellIndex }));
+
+        if (gameMode === 'ai') {
+            setTimeout(() => {
+                const columnForAi = aiMove(board)
+                if (columnForAi !== null) {
+                    dispatch(makeMove({ col: columnForAi }))
+                }
+            }, 1000)
+        }
 
     };
 
@@ -86,7 +105,7 @@ export function Board() {
                     {board.map((row, rowIndex) =>
                         row.map((cell, cellIndex) => {
                             const hoveredCell = getBottomCell(cellIndex) === rowIndex;
-                 
+
 
                             return (<Cell
                                 key={`${rowIndex}-${cellIndex}`}

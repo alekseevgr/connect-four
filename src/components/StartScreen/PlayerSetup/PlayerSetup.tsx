@@ -9,6 +9,8 @@ export function PlayerSetup() {
     const dispatch = useAppDispatch();
     const players = useAppSelector((state) => state.ui.players);
     const errorMessage = useAppSelector((state) => state.ui.errorMessage);
+    const gameMode = useAppSelector((state) => state.ui.gameMode);
+
 
     const [rows, setRows] = useState(6);
     const [cols, setCols] = useState(7);
@@ -17,7 +19,7 @@ export function PlayerSetup() {
 
     const red = players.red.trim();
     const blue = players.blue.trim();
-    const isName = red.length > 0 && blue.length > 0;
+    const isName = red.length > 0 && (gameMode === 'ai' ? true : blue.length > 0);
     const isDuplicate = red.toLowerCase() === blue.toLowerCase();
     useEffect(() => {
         if (!isName && print) {
@@ -48,7 +50,54 @@ export function PlayerSetup() {
         dispatch(startGame());
     };
 
-    console.log('errorMessage:', errorMessage);
+
+    function FirstPlayer() {
+        return (<div className={styles.player}>
+            <label>Игрок 1 (красный)</label>
+            <input
+                type="text"
+                autoFocus
+                value={players.red}
+                onChange={(e) => {
+                    setPrint(true);
+                    dispatch(setPlayerName({ color: 'red', name: e.target.value }));
+                }}
+                placeholder="Введите имя"
+                className={styles.inputRed}
+            />
+        </div>)
+    }
+    function SecondPlayer() {
+        return (
+            <div className={styles.player}>
+                <label>Игрок 2 (синий)</label>
+                <input
+                    type="text"
+                    value={players.blue}
+                    onChange={(e) => {
+                        setPrint(true);
+                        dispatch(setPlayerName({ color: 'blue', name: e.target.value }))
+                    }
+                    }
+                    placeholder="Введите имя"
+                    className={styles.inputBlue}
+                />
+            </div>)
+    }
+    function Computer() {
+        return (
+            <div className={styles.player}>
+                <label>Игрок 2 (синий)</label>
+                <p className={styles.computerName}>Компьютер</p>
+            </div>
+        )
+    }
+
+    useEffect(() => {
+        if (gameMode === 'ai') {
+            dispatch(setPlayerName({ color: 'blue', name: 'Компьютер' }));
+        }
+    }, [gameMode, dispatch]);
 
     const nameError =
         (!isName && print) || (isDuplicate && isName) ? errorMessage : null;
@@ -64,36 +113,8 @@ export function PlayerSetup() {
 
 
                 <div className={styles.players}>
-                    <div className={styles.player}>
-                        <label>Игрок 1 (красный)</label>
-                        <input
-                            type="text"
-                            autoFocus
-                            value={players.red}
-                            onChange={(e) => {
-                                setPrint(true);
-                                dispatch(setPlayerName({ color: 'red', name: e.target.value }))
-                            }
-                            }
-                            placeholder="Введите имя"
-                            className={styles.inputRed}
-                        />
-                    </div>
-
-                    <div className={styles.player}>
-                        <label>Игрок 2 (синий)</label>
-                        <input
-                            type="text"
-                            value={players.blue}
-                            onChange={(e) => {
-                                setPrint(true);
-                                dispatch(setPlayerName({ color: 'blue', name: e.target.value }))
-                            }
-                            }
-                            placeholder="Введите имя"
-                            className={styles.inputBlue}
-                        />
-                    </div>
+                    <FirstPlayer />
+                    {gameMode === 'local' ? <SecondPlayer /> : <Computer />}
                     {nameError && <p className={styles.error}>{nameError}</p>}
                 </div>
                 <div className={styles.rules}>
@@ -169,7 +190,7 @@ export function PlayerSetup() {
 
                 <div className={styles.settings}>
                     <p><strong>Игрок 1:</strong> {red || '—'}</p>
-                    <p><strong>Игрок 2:</strong> {blue || '—'}</p>
+                    <p><strong>Игрок 2:</strong> {gameMode === 'ai' ? 'Компьютер' : blue || '—'}</p>
                     <p><strong>Строк:</strong> {rows}</p>
                     <p><strong>Столбцов:</strong> {cols}</p>
                     <p><strong>Фишек для победы:</strong> {cellToWin}</p>

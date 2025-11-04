@@ -9,12 +9,12 @@ export function StartMenu() {
 
   const buttons: { label: string; mode: GameMode; disabled: boolean }[] = [
     { label: '2 игрока на одном ПК', mode: 'local', disabled: false },
-    { label: 'Против компьютера (скоро)', mode: 'ai', disabled: true },
+    { label: 'Против компьютера', mode: 'ai', disabled: false },
     { label: 'Мультиплеер (скоро)', mode: 'multiplayer', disabled: true },
   ];
 
   return (
-   <div className={`${styles.startMenu}`}>
+    <div className={`${styles.startMenu}`}>
       <h1 className={styles.title}>Connect Four</h1>
       <div>
         {buttons.map((btn) => (
@@ -26,7 +26,9 @@ export function StartMenu() {
             onClick={() => {
               if (!btn.disabled) {
                 dispatch(setGameMode(btn.mode));
-                if (btn.mode === 'local') dispatch(setScreen('names'));
+                if (btn.mode === 'local' || btn.mode === 'ai') {
+                  dispatch(setScreen('names'));
+                }
               }
             }}
             disabled={btn.disabled}

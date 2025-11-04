@@ -40,6 +40,7 @@ label {
 .settings {
   color: #6e6e73;
 }
+
 .buttons {
   display: flex;
   justify-content: center;
@@ -77,12 +78,16 @@ label {
   margin-bottom: 12px;
 }
 
+.computerName {
+  color: #0056d6;
+}
 
 .player label {
   display: block;
   margin-bottom: 6px;
   font-weight: 500;
 }
+
 .inputRed {
   border: 1px solid #ff3b30;
 }
@@ -101,6 +106,7 @@ label {
   transition: box-shadow 0.2s ease;
   background-color: #ffffff;
 }
+
 .inputRed:focus {
   border-color: #ff3b30;
   box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.3);
@@ -166,7 +172,8 @@ label {
     font-size: 1.6rem;
     text-align: center;
   }
-   .buttons {
+
+  .buttons {
     flex-direction: column;
     width: 100%;
   }
