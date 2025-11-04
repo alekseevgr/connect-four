@@ -6,7 +6,7 @@ import { Board } from './components/Board/Board';
 export default function App() {
   const screen = useSelector((state: RootState) => state.ui.screen);
 
-  if (screen === 'menu' || screen === 'names') return <StartScreen />;
+  if (screen === 'menu' || screen === 'names' || screen === 'multiplayerSetup') return <StartScreen />;
   if (screen === 'game') return <Board />;
 
   return null;

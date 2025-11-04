@@ -3,6 +3,7 @@ import gameReducer from './gameSlice'
 import uiReducer from './uiSlice'
 import statsReducer from './statsSlice'
 import storage from 'redux-persist/lib/storage'
+import multiplayerReducer from './multiplayerSlice';
 import {
   persistStore,
   persistReducer,
@@ -17,7 +18,8 @@ import {
 const rootReducer = combineReducers({
   game: gameReducer,
   ui: uiReducer,
-  stats: statsReducer
+  stats: statsReducer,
+  multiplayer: multiplayerReducer,
 })
 
 

@@ -15,7 +15,7 @@ export type GameState = {
 }
 export type GameMode = 'local' | 'ai' | 'multiplayer';
 
-export type Screen = 'menu' | 'names' | 'game';
+export type Screen = 'menu' | 'names' | 'game' | 'multiplayerSetup';
 
 export type UIState = {
     gameMode: GameMode | null;

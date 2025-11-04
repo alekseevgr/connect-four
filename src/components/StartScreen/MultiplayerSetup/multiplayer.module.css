@@ -1,0 +1,119 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center; 
+  gap: 10px;           
+  background-color: #fbfbfd;
+  padding: 40px;
+  min-height: 100vh;  
+}
+
+.block {
+ background-color: #f5f5f7;
+  border: 1px solid #d2d2d7;
+  border-radius: 20px;
+  padding: 10px;
+  width: 420px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.block:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+  transform: translateY(-2px);
+}
+
+.title {
+  font-size: 2rem;
+  color: #1d1d1f;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
+}
+
+h3 {
+  color: #1d1d1f;
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+p {
+  color: #6e6e73;
+  margin-bottom: 10px;
+}
+
+.inputMultiplayer {
+  width: 90%;
+  padding: 12px 16px;
+  border: 1px solid #d2d2d7;
+  border-radius: 10px;
+  font-size: 1rem;
+  background-color: #fff;
+  margin-bottom: 10px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus {
+  border-color: #007aff;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25);
+}
+
+.button {
+  background-color: #007aff;
+  color: #ffffff;
+  font-weight: 500;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+}
+
+.button:hover {
+  background-color: #0056d6;
+  transform: translateY(-1px);
+}
+
+.backButton {
+  margin-top: 40px;
+  background-color: #e5e5ea;
+  color: #1d1d1f;
+  font-weight: 500;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.backButton:hover {
+  background-color: #d2d2d7;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 20px;
+  }
+
+  .block {
+    width: 90%;
+    max-width: 500px;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .button,
+  .backButton {
+    width: 100%;
+  }
+}

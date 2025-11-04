@@ -9,7 +9,10 @@ import { addWin } from '../../store/statsSlice';
 import { Stats } from '../Stats/Stats';
 import { FinishResult } from '../FinishResult/FinishResult'
 import { UndoRedo } from './UndoRedo';
-import aiMove from '../../utils/aimove';
+import aiMove from '../../utils/aiMove';
+import { useRealtimeGame } from '../../utils/useRealtimeGame';
+import { receiveMove } from '../../store/multiplayerSlice';
+
 
 
 export function Board() {
@@ -18,6 +21,7 @@ export function Board() {
     const { red, blue } = useAppSelector((state) => state.ui.players);
     const { board, currentPlayer, winner, winningCells } = useAppSelector((state) => state.game);
     const gameMode = useAppSelector((state) => state.ui.gameMode);
+    const { roomId } = useAppSelector((state) => state.multiplayer);
 
     const [curColumn, setCurColumn] = useState<number | null>(null);
 
@@ -27,6 +31,11 @@ export function Board() {
     const currentName = currentPlayer === 'player_1' ? red : blue
     const winnerName = winner === 'player_1' ? red : blue
 
+
+    const { sendMove, playersCount } = useRealtimeGame(roomId!, currentName, (column: number) => {
+        dispatch(receiveMove(column));
+        dispatch(makeMove({ col: column }));
+    });
 
     const text = (
         <h2>
@@ -74,10 +83,16 @@ export function Board() {
     const handleColumnClick = async (cellIndex: number) => {
         if (winner) return;
         if (isColumnFull(cellIndex)) return;
+        if (gameMode === 'multiplayer' && playersCount < 2) return;
 
         if (gameMode === 'ai' && currentPlayer === 'player_2') return; //  нельзя кликнуть когда комп в игре
 
         dispatch(makeMove({ col: cellIndex }));
+
+        if (gameMode === 'multiplayer') {
+            sendMove(cellIndex);
+            return;
+        }
 
         if (gameMode === 'ai') {
             setTimeout(() => {
@@ -95,6 +110,14 @@ export function Board() {
         <div className={styles.boardWrapper}>
             <div className={styles.game}>
                 <h1 className={styles.title}> Очень увлекательная игра</h1>
+                {gameMode === 'multiplayer' && (
+                    <p className={styles.roomInfo}>
+                        Комната: <b>{roomId}</b> ({playersCount}/2 игроков)
+                    </p>
+                )}
+                {gameMode === 'multiplayer' && playersCount < 2 && (
+                    <h3>Ожидание второго игрока...</h3>
+                )}
                 {isDraw ? drawText : winner ? winnerText : text}
 
                 <div className={styles.board}
@@ -123,7 +146,7 @@ export function Board() {
                         }
                         ))}
                 </div>
-                <UndoRedo />
+                {gameMode !== 'multiplayer' && <UndoRedo />}
                 <div className={styles.buttonContainer}>
                     <button className={styles.resetButton} onClick={() => dispatch(resetGame())}>
                         Начать заново

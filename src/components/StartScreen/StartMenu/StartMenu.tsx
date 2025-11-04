@@ -10,7 +10,7 @@ export function StartMenu() {
   const buttons: { label: string; mode: GameMode; disabled: boolean }[] = [
     { label: '2 игрока на одном ПК', mode: 'local', disabled: false },
     { label: 'Против компьютера', mode: 'ai', disabled: false },
-    { label: 'Мультиплеер (скоро)', mode: 'multiplayer', disabled: true },
+    { label: 'Мультиплеер (тест)', mode: 'multiplayer', disabled: false },
   ];
 
   return (
@@ -24,14 +24,14 @@ export function StartMenu() {
               [styles.disabled]: btn.disabled,
             })}
             onClick={() => {
-              if (!btn.disabled) {
                 dispatch(setGameMode(btn.mode));
                 if (btn.mode === 'local' || btn.mode === 'ai') {
                   dispatch(setScreen('names'));
                 }
-              }
+                if (btn.mode === 'multiplayer') {
+                  dispatch(setScreen('multiplayerSetup'));
+                }
             }}
-            disabled={btn.disabled}
           >
             {btn.label}
           </button>
