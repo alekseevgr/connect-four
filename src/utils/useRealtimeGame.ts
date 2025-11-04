@@ -1,52 +1,45 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 
-export function useRealtimeGame(
-  roomId: string,
-  playerName: string,
-  onMove: (move: number) => void
-) {
+export function useRealtimeGame(roomId: string, playerName: string, onMove: (col: number) => void) {
   const [playersCount, setPlayersCount] = useState(0);
-  const channelRef = useRef<RealtimeChannel | null>(null);
+  const [channel, setChannel] = useState<RealtimeChannel | null>(null);
 
   useEffect(() => {
     if (!roomId || !playerName) return;
 
-    const channel: RealtimeChannel = supabase.channel(`game:${roomId}`, {
-      config: {
-        broadcast: { self: false },
-        presence: { key: playerName },
-      },
+    const ch = supabase.channel(`game:${roomId}`, {
+      config: { presence: { key: playerName } },
     });
 
-    channel.on('presence', { event: 'sync' }, () => {
-      const users = channel.presenceState();
-      setPlayersCount(Object.keys(users).length);
+    ch.on('presence', { event: 'sync' }, () => {
+      const users = ch.presenceState();
+      const count = Object.keys(users).length;
+      setPlayersCount(count);
     });
 
-    channel.on('broadcast', { event: 'move' }, (payload) => {
-      const move = payload.payload as number;
-      onMove(move);
+    ch.on('broadcast', { event: 'move' }, (payload) => {
+      onMove(payload.payload.col);
     });
 
-    channel.subscribe(async (status) => {
+    ch.subscribe(async (status) => {
       if (status === 'SUBSCRIBED') {
-        await channel.track({ player: playerName });
+        await ch.track({ player: playerName });
       }
     });
 
-    channelRef.current = channel;
-
+    setChannel(ch);
     return () => {
-      channel.unsubscribe();
+      ch.unsubscribe();
     };
   }, [roomId, playerName, onMove]);
-  const sendMove = (move: number) => {
-    channelRef.current?.send({
+
+  const sendMove = (col: number) => {
+    channel?.send({
       type: 'broadcast',
       event: 'move',
-      payload: move,
+      payload: { col },
     });
   };
 

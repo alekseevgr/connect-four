@@ -10,6 +10,8 @@
 
 [Играть онлайн](https://connect-four-taupe.vercel.app/)
 
+[Играть мультиплеер](https://multiplayer-connect-four.vercel.app/)
+
 ---
 
 ## Требования для запуска

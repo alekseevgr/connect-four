@@ -3,7 +3,7 @@ import { makeMove, resetGame } from '../../store/gameSlice';
 import { useState } from 'react';
 import { Cell } from '../Cell/Cell';
 import styles from './board.module.css';
-import { goToMenu } from '../../store/uiSlice';
+import { goToMenu, setScreen } from '../../store/uiSlice';
 import { useEffect } from 'react';
 import { addWin } from '../../store/statsSlice';
 import { Stats } from '../Stats/Stats';
@@ -36,6 +36,12 @@ export function Board() {
         dispatch(receiveMove(column));
         dispatch(makeMove({ col: column }));
     });
+
+    useEffect(() => {
+        if (gameMode === 'multiplayer' && playersCount === 2) {
+            dispatch(setScreen('game'));
+        }
+    }, [playersCount, gameMode, dispatch]);
 
     const text = (
         <h2>
