@@ -9,7 +9,7 @@ import { addWin } from '../../store/statsSlice';
 import { Stats } from '../Stats/Stats';
 import { FinishResult } from '../FinishResult/FinishResult'
 import { UndoRedo } from './UndoRedo';
-import aiMove from '../../utils/aimove';
+import aiMove from '../../utils/aiMove';
 
 
 export function Board() {
