@@ -10,10 +10,10 @@ export function MultiplayerSetup() {
   const [targetId, setTargetId] = useState('');
   const [playerName, setPlayerNameInput] = useState('');
 
-  const { myId, connected, sendMove } = usePeerGame(
-    isHost === true,
-    isHost === false ? targetId : undefined
-  );
+ const { myId, connected } = usePeerGame(
+  isHost === true,
+  isHost === false ? targetId : undefined
+);
 
   const startGame = () => {
     if (!playerName.trim()) return alert('Введите имя!');
