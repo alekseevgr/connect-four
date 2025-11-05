@@ -1,59 +1,56 @@
-import { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { useState } from 'react';
+import { useAppDispatch } from '../../../store/hooks';
 import { setScreen, setPlayerName } from '../../../store/uiSlice';
-import {
-  setRoomId,
-  setPlayerRole,
-} from '../../../store/multiplayerSlice';
-import { useRealtimeGame } from '../../../utils/useRealtimeGame';
 import styles from './multiplayer.module.css';
+import { usePeerGame } from '../../../utils/usePeerGame'
 
 export function MultiplayerSetup() {
-  
   const dispatch = useAppDispatch();
-  const { roomId } = useAppSelector((state) => state.multiplayer);
-   const { red } = useAppSelector((state) => state.ui.players);
-
-  const [inputRoomId, setInputRoomId] = useState('');
-  const [generatedRoomId] = useState(() =>
-    Math.random().toString(36).slice(2, 8)
-  );
+  const [isHost, setIsHost] = useState<boolean | null>(null);
+  const [targetId, setTargetId] = useState('');
   const [playerName, setPlayerNameInput] = useState('');
-  const [mode, setMode] = useState<'create' | 'join' | null>(null);
 
-  const { playersCount } = useRealtimeGame(roomId || '', red, () => {});
+  const { myId, connected, sendMove } = usePeerGame(
+    isHost === true,
+    isHost === false ? targetId : undefined
+  );
 
-  useEffect(() => {
-    if (playersCount === 2) {
-      dispatch(setScreen('game'));
-    }
-  }, [playersCount, dispatch]);
-
-  const handleCreateRoom = () => {
+  const startGame = () => {
     if (!playerName.trim()) return alert('Введите имя!');
-    dispatch(setPlayerName({ color: 'red', name: playerName.trim() }));
-    dispatch(setRoomId(generatedRoomId));
-    dispatch(setPlayerRole('player_1'));
-    setMode('create');
-  };
-
-  const handleJoinRoom = () => {
-    if (!playerName.trim()) return alert('Введите имя!');
-    if (!inputRoomId.trim()) return alert('Введите ID комнаты!');
-    dispatch(setPlayerName({ color: 'blue', name: playerName.trim() }));
-    dispatch(setRoomId(inputRoomId.trim()));
-    dispatch(setPlayerRole('player_2'));
-    setMode('join');
+    dispatch(setPlayerName({ color: isHost ? 'red' : 'blue', name: playerName.trim() }));
+    dispatch(setScreen('game'));
   };
 
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.title}>Мультиплеер</h1>
 
+      {!isHost && isHost !== false && (
+        <div className={styles.block}>
+          <button onClick={() => setIsHost(true)}>Создать комнату</button>
+          <button onClick={() => setIsHost(false)}>Подключиться</button>
+        </div>
+      )}
+
+      {isHost && (
+        <div className={styles.block}>
+          <p>Ваш Peer ID (отправьте другу):</p>
+          <p><b>{myId || 'Подключаемся...'}</b></p>
+        </div>
+      )}
+
+      {isHost === false && (
+        <div className={styles.block}>
+          <input
+            value={targetId}
+            onChange={(e) => setTargetId(e.target.value)}
+            placeholder="Введите ID друга"
+          />
+        </div>
+      )}
+
       <div className={styles.block}>
-        <h3>Введите ваше имя</h3>
         <input
-          className={styles.inputMultiplayer}
           type="text"
           value={playerName}
           onChange={(e) => setPlayerNameInput(e.target.value)}
@@ -61,54 +58,13 @@ export function MultiplayerSetup() {
         />
       </div>
 
-      <div className={styles.block}>
-        <h3>Создать комнату</h3>
-        <p>Отправьте этот ID другу:</p>
-        <p><b>{generatedRoomId}</b></p>
-        <button className={styles.button} onClick={handleCreateRoom}>
-          Создать
+      {connected ? (
+        <button className={styles.button} onClick={startGame}>
+          Начать игру
         </button>
-      </div>
-
-      <div className={styles.block}>
-        <h3>Присоединиться</h3>
-        <input
-          className={styles.inputMultiplayer}
-          type="text"
-          value={inputRoomId}
-          onChange={(e) => setInputRoomId(e.target.value)}
-          placeholder="Введите ID комнаты"
-        />
-        <button className={styles.button} onClick={handleJoinRoom}>
-          Подключиться
-        </button>
-      </div>
-
-      {mode && (
-        <div className={styles.block}>
-          <h3>Комната готова!</h3>
-          <p>
-            {mode === 'create'
-              ? `Ожидание второго игрока... (${playersCount}/2)`
-              : `Вы подключились к комнате ${roomId}.`}
-          </p>
-          {playersCount === 2 && (
-            <button
-              className={styles.button}
-              onClick={() => dispatch(setScreen('game'))}
-            >
-              Начать игру
-            </button>
-          )}
-        </div>
+      ) : (
+        <p>{isHost === null ? '' : 'Ожидание подключения...'}</p>
       )}
-
-      <button
-        className={styles.backButton}
-        onClick={() => dispatch(setScreen('menu'))}
-      >
-        Назад в меню
-      </button>
     </div>
   );
 }
