@@ -10,7 +10,7 @@ export function usePeerGame(isHost: boolean, peerId?: string) {
 
     useEffect(() => {
         // создаём peer
-        const peer = new Peer(undefined, {
+        const peer = new Peer({
             host: '0.peerjs.com',
             port: 443,
             secure: true,
