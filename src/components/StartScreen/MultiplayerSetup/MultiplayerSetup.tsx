@@ -10,10 +10,10 @@ export function MultiplayerSetup() {
   const [targetId, setTargetId] = useState('');
   const [playerName, setPlayerNameInput] = useState('');
 
- const { myId, connected } = usePeerGame(
-  isHost === true,
-  isHost === false ? targetId : undefined
-);
+  const { myId, connected } = usePeerGame(
+    isHost === true,
+    isHost === false ? targetId : undefined
+  );
 
   const startGame = () => {
     if (!playerName.trim()) return alert('Введите имя!');
@@ -57,11 +57,12 @@ export function MultiplayerSetup() {
           placeholder="Ваше имя"
         />
       </div>
-
       {connected ? (
-        <button className={styles.button} onClick={startGame}>
-          Начать игру
-        </button>
+        isHost && (
+          <button className={styles.button} onClick={startGame}>
+            Начать игру
+          </button>
+        )
       ) : (
         <p>{isHost === null ? '' : 'Ожидание подключения...'}</p>
       )}
