@@ -39,7 +39,7 @@ function placeCell(board: (Player | null)[][], column: number, player: Player): 
         }
     }
     return -1;
-} 
+}
 
 // собираем все ходы игроков
 function playerPositions(board: (Player | null)[][]) {
@@ -72,8 +72,8 @@ function getBoardState(board: (Player | null)[][], row: number, col: number) {
         };
     }
 
-    if (draw) return { state: 'draw' as const};
-    return { state: 'pending' as const};
+    if (draw) return { state: 'draw' as const };
+    return { state: 'pending' as const };
 
 }
 
@@ -87,6 +87,7 @@ const validator = (playersMove: number[]): GameHistory => {
         player_2: [],
         board_state: "waiting",
     };
+    if (playersMove.length === 0) return history;
 
     for (let stepNumber = 0; stepNumber < playersMove.length; stepNumber += 1) {
         const player: Player = stepNumber % 2 === 0 ? "player_1" : "player_2";
@@ -100,7 +101,7 @@ const validator = (playersMove: number[]): GameHistory => {
 
         const { player_1, player_2 } = playerPositions(board);
         const { state, winner } = getBoardState(board, rowPlaced, column);
-        
+
 
         const stepKey = `step_${stepNumber + 1}`;
 
