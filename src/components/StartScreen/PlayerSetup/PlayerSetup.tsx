@@ -4,6 +4,44 @@ import { initGame } from '../../../store/gameSlice';
 import styles from './start.module.css';
 import { useState, useEffect } from 'react';
 
+function FirstPlayer({ value, onChange }: { value: string; onChange: (val: string) => void }) {
+    return (
+        <div className={styles.player}>
+            <label>Игрок 1 (красный)</label>
+            <input
+                autoFocus
+                type="text"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder="Введите имя"
+                className={styles.inputRed}
+            />
+        </div>
+    );
+}
+function SecondPlayer({ value, onChange }: { value: string; onChange: (val: string) => void }) {
+    return (
+        <div className={styles.player}>
+            <label>Игрок 2 (синий)</label>
+            <input
+                type="text"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder="Введите имя"
+                className={styles.inputBlue}
+            />
+        </div>
+    );
+}
+function Computer() {
+    return (
+        <div className={styles.player}>
+            <label>Игрок 2 (синий)</label>
+            <p className={styles.computerName}>Компьютер</p>
+        </div>
+    );
+}
+
 
 export function PlayerSetup() {
     const dispatch = useAppDispatch();
@@ -50,54 +88,21 @@ export function PlayerSetup() {
         dispatch(startGame());
     };
 
-
-    function FirstPlayer() {
-        return (<div className={styles.player}>
-            <label>Игрок 1 (красный)</label>
-            <input
-                type="text"
-                autoFocus
-                value={players.red}
-                onChange={(e) => {
-                    setPrint(true);
-                    dispatch(setPlayerName({ color: 'red', name: e.target.value }));
-                }}
-                placeholder="Введите имя"
-                className={styles.inputRed}
-            />
-        </div>)
-    }
-    function SecondPlayer() {
-        return (
-            <div className={styles.player}>
-                <label>Игрок 2 (синий)</label>
-                <input
-                    type="text"
-                    value={players.blue}
-                    onChange={(e) => {
-                        setPrint(true);
-                        dispatch(setPlayerName({ color: 'blue', name: e.target.value }))
-                    }
-                    }
-                    placeholder="Введите имя"
-                    className={styles.inputBlue}
-                />
-            </div>)
-    }
-    function Computer() {
-        return (
-            <div className={styles.player}>
-                <label>Игрок 2 (синий)</label>
-                <p className={styles.computerName}>Компьютер</p>
-            </div>
-        )
-    }
-
     useEffect(() => {
         if (gameMode === 'ai') {
             dispatch(setPlayerName({ color: 'blue', name: 'Компьютер' }));
         }
     }, [gameMode, dispatch]);
+
+    const handleRedChange = (val: string) => {
+        setPrint(true);
+        dispatch(setPlayerName({ color: 'red', name: val }));
+    };
+
+    const handleBlueChange = (val: string) => {
+        setPrint(true);
+        dispatch(setPlayerName({ color: 'blue', name: val }));
+    };
 
     const nameError =
         (!isName && print) || (isDuplicate && isName) ? errorMessage : null;
@@ -105,16 +110,17 @@ export function PlayerSetup() {
     const fieldError =
         cellToWin > Math.min(rows, cols) ? errorMessage : null;
     return (
-        <form className={styles.container}
-            onSubmit={handleSubmit}
-        >
+        <form className={styles.container} onSubmit={handleSubmit}>
             <div className={styles.block}>
-                <h1 className={styles.title}>Введите имена игроков и выберите правила игры</h1>
-
+                <h1 className={styles.title}>
+                    Введите имена игроков и выберите правила игры
+                </h1>
 
                 <div className={styles.players}>
-                    <FirstPlayer />
-                    {gameMode === 'local' ? <SecondPlayer /> : <Computer />}
+                    <FirstPlayer value={players.red} onChange={handleRedChange} />
+                    {gameMode === 'local' ? (
+                        <SecondPlayer value={players.blue} onChange={handleBlueChange} />
+                    ) : (<Computer />)}
                     {nameError && <p className={styles.error}>{nameError}</p>}
                 </div>
                 <div className={styles.rules}>
