@@ -19,17 +19,19 @@
 
 
 .button {
+  flex: 1;
   background-color: #007aff;
   color: #ffffff;
   font-weight: 500;
   border: none;
-  border-radius: 12px;
+  border-radius: 12px 0 0 12px;
   padding: 12px 24px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin-top: 10px;
-  display: block;
-  width: 100%;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
 }
 
 .button:hover {
@@ -40,4 +42,44 @@
 .button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.startButtons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 280px;
+  margin-bottom: 12px;
+  margin-top: 10px;
+}
+
+.quickStart {
+  width: 60px;
+  background-color: #007aff;
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 0 12px 12px 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quickStart:hover {
+  background-color: #0056d6;
+  transform: translateY(-1px);
+}
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button,
+.quickStart {
+  height: 44px;
+  line-height: 1;
 }

@@ -144,6 +144,8 @@ export const gameSlice = createSlice({
             state.currentPlayer = 'player_1'
             state.winner = null
             state.winningCells = []
+            state.prev = [];
+            state.next = [];
         }
     }
 })

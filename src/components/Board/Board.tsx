@@ -85,7 +85,7 @@ export function Board() {
                 if (columnForAi !== null) {
                     dispatch(makeMove({ col: columnForAi }))
                 }
-            }, 1000)
+            }, 800)
         }
 
     };
