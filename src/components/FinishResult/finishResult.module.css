@@ -43,7 +43,7 @@
     border-radius: 12px;
     padding: 12px 24px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease;
     margin-top: 10px;
 }
 
@@ -79,7 +79,7 @@
 
 
 @media (max-width: 480px) {
-    .modal {
+    .result {
         padding: 24px 16px;
     }
 

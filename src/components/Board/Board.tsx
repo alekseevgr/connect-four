@@ -71,7 +71,7 @@ export function Board() {
         return null;
     };
 
-    const handleColumnClick = async (cellIndex: number) => {
+    const handleColumnClick = (cellIndex: number) => {
         if (winner) return;
         if (isColumnFull(cellIndex)) return;
 
